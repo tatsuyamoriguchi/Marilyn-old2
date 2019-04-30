@@ -9,8 +9,7 @@
 import UIKit
 import CoreData
 
-//class CauseDescViewController: UIViewController, UITextViewDelegate {
-class CauseDescViewController: UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+class CauseDescViewController: UIViewController, UITextViewDelegate {
  
     // Passed from StateOfMindTVC via segue
     var stateOfMindDesc: StateOfMindDesc!
@@ -84,13 +83,15 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
         self.causeTextView.isEditable = true
         self.changeTitle(title: "Add New")
         
+        let newPosition = causeTextView.endOfDocument
+        causeTextView.selectedTextRange = causeTextView.textRange(from: newPosition, to: newPosition)
+        
     }
     
     // Change Navigation Bar Item Button Title, dynamically
     func changeTitle(title: String) {
         let item = self.navigationItem.rightBarButtonItem!
         let button = item.customView as! UIButton
-        //button.titleLabel?.font =
         
         button.titleLabel?.font.withSize(30)
         button.setTitle(title, for: .normal)
@@ -122,13 +123,8 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
         } catch {
             print(error.localizedDescription)
         }
-        
     }
     
-
-    
-    
-   // let causeDescObj: NSManagedObject
 
     func save(itemName: String) {
 
@@ -185,12 +181,11 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
         self.causeTextView.isEditable = true
         self.changeTitle(title: "Add New")
     }
+}
 
- 
-//}
 
-//extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
-    
+extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+    //UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController?.sections else {
             print("numberOfRowsInSection failed.")
@@ -234,7 +229,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
             self.changeTitle(title: "Update")
 
             let newPosition = self.causeTextView.endOfDocument
-            seilf.causeTextView.selectedTextRange = causeTextView.textRange(from: newPosition, to: newPosition)
+            self.causeTextView.selectedTextRange = self.causeTextView.textRange(from: newPosition, to: newPosition)
             
             //let selectedRange: UITextRange? = causeTextView.selectedTextRange
         
