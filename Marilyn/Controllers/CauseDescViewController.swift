@@ -15,7 +15,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
     // Passed from StateOfMindTVC via segue
     var stateOfMindDesc: StateOfMindDesc!
     var wordToSave: Cause?
-    var updateMode: Bool = false
+    var buttonMode: String = "Add New"
     
     let adjectiveError = "Adjective was not selected."
     
@@ -25,7 +25,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func clearToAddNewOnPressed(_ sender: UIButton) {
-        updateMode = false
+        buttonMode = "Add New"
         causeTextView.text = "" //"Type a new cause here."
         self.changeTitle(title: "Add New")
         self.causeTextView.isEditable = true
@@ -34,27 +34,36 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
  
     
     @IBAction func saveOnPressed(_ sender: Any) {
-        print("why this is not working???")
+        
+        
         // Add a new cause
         if causeTextView.text == "" {
             print("Nothing to save here, really")
             // add a alert here
+            causeTextView.text = "No text was found. Type something to proceed."
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.causeTextView.text = ""
+            }
     
-        } else if updateMode == true {
-             //update(itemToUpdate: CauseDesc, itemName: itemToAdd!)
-            // To update a change of an existing cause
-            
-            print("wordToSave on saveOnPressed: \(wordToSave)")
-            update(itemToUpdate: wordToSave!, itemName: causeTextView.text)
-            performSegue(withIdentifier: "toCauseTVCSegue", sender: self)
         } else {
-            // To add a new cause
-            save(itemName: causeTextView.text)
+            
+            switch buttonMode {
+            case "Update":
+            update(itemToUpdate: wordToSave!, itemName: causeTextView.text)
+            case "Add New":
+                save(itemName: causeTextView.text)
+            case "Select":
+                print("")
+            default:
+                print("")
+            }
+            causeTextView.text = ""
+            causeTextView.isEditable = true
+            changeTitle(title: "Add New")
             performSegue(withIdentifier: "toCauseTVCSegue", sender: self)
+
+  
         }
-        
-        
-        
     }
     
     override func viewDidLoad() {
@@ -136,7 +145,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
         } catch {
             print("Failed to save an item: \(error.localizedDescription)")
         }
-        updateMode = false
+        buttonMode = "Add New"
         causeTextView.text = ""
     }
    
@@ -171,7 +180,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
     func update(itemToUpdate: NSManagedObject, itemName: String) {
         print("update itemToUpdate: \(itemToUpdate)")
         itemToUpdate.setValue(itemName, forKey: "causeDesc")
-        updateMode = false
+        buttonMode = "Update"
         causeTextView.text = ""
         self.causeTextView.isEditable = true
         self.changeTitle(title: "Add New")
@@ -219,23 +228,32 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
             //self.causeEditAlert(CauseDesc: wordToSave)
             //}
             // call a function passing wordToSave
-            self.updateMode = true
+            self.buttonMode = "Update"
 
             self.causeTextView.isEditable = true
             self.changeTitle(title: "Update")
+
+            let newPosition = self.causeTextView.endOfDocument
+            seilf.causeTextView.selectedTextRange = causeTextView.textRange(from: newPosition, to: newPosition)
+            
+            //let selectedRange: UITextRange? = causeTextView.selectedTextRange
         
         }
 
         let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
             print("Deleting")
             managedContext?.delete(self.wordToSave!)
-        //}
-        
-        do {
-            try managedContext?.save()
-        } catch {
-            print("Saving Error: \(error)")
-        }
+            //}
+            
+            do {
+                try managedContext?.save()
+            } catch {
+                print("Saving Error: \(error)")
+            }
+            
+            self.causeTextView.text = ""
+            self.causeTextView.isEditable = true
+            self.changeTitle(title: "Add New")
         }
         
         edit.backgroundColor = UIColor.blue
@@ -245,15 +263,13 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        //let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        //let managedContext = appDelegate?.persistentContainer.viewContext
         let wordToSave = self.fetchedResultsController?.object(at: indexPath) as! Cause
         
         print(wordToSave.causeDesc as Any)
         self.causeTextView.text = wordToSave.causeDesc
         causeTextView.isEditable = false
         changeTitle(title: "Select")
-        
+        buttonMode = "Select"
         
     }
     
