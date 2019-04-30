@@ -59,7 +59,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
             causeTextView.text = ""
             causeTextView.isEditable = true
             changeTitle(title: "Add New")
-            performSegue(withIdentifier: "toCauseTVCSegue", sender: self)
+            performSegue(withIdentifier: "toCauseTVCSegue", sender: wordToSave)
 
   
         }
@@ -100,7 +100,6 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
     
     // MARK: - Clear UITextView upon Editing and Dismissing a Keyboard
     @objc func tap(sender: UITapGestureRecognizer) {
-        
         view.endEditing(true)
     }
 
@@ -135,12 +134,16 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
         let item = NSManagedObject(entity: entity, insertInto: managedContext)
         item.setValue(itemName, forKey: "causeDesc")
         
+        wordToSave = item as? Cause
+        
         do {
             try managedContext.save()
             
         } catch {
             print("Failed to save an item: \(error.localizedDescription)")
         }
+        
+        // Change button title back to Add New, and clear TextView content
         buttonMode = "Add New"
         causeTextView.text = ""
     }
@@ -181,6 +184,21 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
         self.causeTextView.isEditable = true
         self.changeTitle(title: "Add New")
     }
+
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toCauseTVCSegue" {
+            let destVC = segue.destination as! CauseTableViewController
+            destVC.stateOfMindDesc = stateOfMindDesc
+
+            print("wordToSave on segue: \(self.wordToSave)")
+            destVC.causeDesc = wordToSave
+            
+        }
+    }
+
 }
 
 
@@ -258,10 +276,10 @@ extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource, N
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let wordToSave = self.fetchedResultsController?.object(at: indexPath) as! Cause
+        wordToSave = self.fetchedResultsController?.object(at: indexPath) as? Cause
         
-        print(wordToSave.causeDesc as Any)
-        self.causeTextView.text = wordToSave.causeDesc
+        print(wordToSave?.causeDesc as Any)
+        self.causeTextView.text = wordToSave?.causeDesc
         causeTextView.isEditable = false
         changeTitle(title: "Select")
         buttonMode = "Select"
@@ -274,16 +292,7 @@ extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource, N
         tableView.reloadData()
     }
     
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toCauseTVCSegue" {
-            let destVC = segue.destination as! CauseTableViewController
-            destVC.stateOfMindDesc = stateOfMindDesc
-            
-        }
-    }
+
     
 }
 

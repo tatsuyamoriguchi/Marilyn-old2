@@ -14,6 +14,8 @@ class CauseTableViewController: UITableViewController {
     // Passed from CauseDescVC via segue
     var stateOfMindDesc: StateOfMindDesc!
     let adjectiveError = "Adjective was not selected."
+    var causeDesc: Cause!
+    
     
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
@@ -23,8 +25,9 @@ class CauseTableViewController: UITableViewController {
         tableView.dataSource = self
         
         print("This is CauseTableViewConroller")
-        print("stateOfMindDesc.adjective: \(stateOfMindDesc.adjective)")
+        print("stateOfMindDesc.adjective: \(String(describing: stateOfMindDesc.adjective))")
         print("stateOfMindDesc.rate: \(stateOfMindDesc.rate)")
+        print("causeDesc: \(String(describing: causeDesc))")
         
         
         //navigationController?.navigationBar.topItem?.title = "Your Current State of Mind: \(stateOfMindDesc.adjective ?? "ERROR")"
