@@ -24,23 +24,36 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
     @IBOutlet weak var causeTextView: UITextView!
     @IBOutlet weak var tableView: UITableView!
     
-    @IBAction func saveOnPressed(_ sender: UIBarButtonItem) {
+    @IBAction func clearToAddNewOnPressed(_ sender: UIButton) {
+        updateMode = false
+        causeTextView.text = "" //"Type a new cause here."
+        self.changeTitle(title: "Add New")
+        self.causeTextView.isEditable = true
         
+    }
+ 
+    
+    @IBAction func saveOnPressed(_ sender: Any) {
+        print("why this is not working???")
         // Add a new cause
-        if causeTextView.text != "" && updateMode == false {
-            // To add a new cause
-            save(itemName: causeTextView.text)
-            causeTextView.text = ""
-            
-        // Update an existing cause
-        } else if causeTextView.text != "" && updateMode == true {
+        if causeTextView.text == "" {
+            print("Nothing to save here, really")
+            // add a alert here
+    
+        } else if updateMode == true {
              //update(itemToUpdate: CauseDesc, itemName: itemToAdd!)
             // To update a change of an existing cause
+            
             print("wordToSave on saveOnPressed: \(wordToSave)")
-            //update(itemToUpdate: wordToSave, itemName: causeTextView.text)
+            update(itemToUpdate: wordToSave!, itemName: causeTextView.text)
+            performSegue(withIdentifier: "toCauseTVCSegue", sender: self)
         } else {
-            print("Nothing to save here, really")
+            // To add a new cause
+            save(itemName: causeTextView.text)
+            performSegue(withIdentifier: "toCauseTVCSegue", sender: self)
         }
+        
+        
         
     }
     
@@ -58,10 +71,23 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         tapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGestureRecognizer)
+ 
+        self.causeTextView.isEditable = true
+        self.changeTitle(title: "Add New")
         
     }
     
+    // Change Navigation Bar Item Button Title, dynamically
+    func changeTitle(title: String) {
+        let item = self.navigationItem.rightBarButtonItem!
+        let button = item.customView as! UIButton
+        //button.titleLabel?.font =
+        
+        button.titleLabel?.font.withSize(30)
+        button.setTitle(title, for: .normal)
+    }
 
+    
     // MARK: - Clear UITextView upon Editing and Dismissing a Keyboard
     @objc func tap(sender: UITapGestureRecognizer) {
         
@@ -110,11 +136,11 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
         } catch {
             print("Failed to save an item: \(error.localizedDescription)")
         }
-        
-        
+        updateMode = false
+        causeTextView.text = ""
     }
    
-
+/*
     func causeEditAlert(CauseDesc: Cause) {
         let alertController = UIAlertController(title: "Edit", message: "Edit the cause.", preferredStyle: .alert)
         
@@ -141,13 +167,14 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
     }
-    
+ */
     func update(itemToUpdate: NSManagedObject, itemName: String) {
         print("update itemToUpdate: \(itemToUpdate)")
         itemToUpdate.setValue(itemName, forKey: "causeDesc")
         updateMode = false
-        
-        
+        causeTextView.text = ""
+        self.causeTextView.isEditable = true
+        self.changeTitle(title: "Add New")
     }
 
  
@@ -179,24 +206,29 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate?.persistentContainer.viewContext
-        let wordToSave = self.fetchedResultsController?.object(at: indexPath) as! Cause
+        //let wordToSave = self.fetchedResultsController?.object(at: indexPath) as! Cause
+        wordToSave = self.fetchedResultsController?.object(at: indexPath) as? Cause
         
         let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
             
             //if let wordToSave = self.fetchedResultsController?.object(at: indexPath) as? Cause {
-            print("Editing: \(wordToSave)")
-            self.causeTextView.text = wordToSave.causeDesc
+            print("Editing: \(self.wordToSave)")
+            self.causeTextView.text = self.wordToSave!.causeDesc
+            
             //let causeDescToUpdate = wordToSave.causeDesc
-            self.causeEditAlert(CauseDesc: wordToSave)
+            //self.causeEditAlert(CauseDesc: wordToSave)
             //}
             // call a function passing wordToSave
             self.updateMode = true
+
+            self.causeTextView.isEditable = true
+            self.changeTitle(title: "Update")
         
         }
 
         let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
             print("Deleting")
-            managedContext?.delete(wordToSave as NSManagedObject)
+            managedContext?.delete(self.wordToSave!)
         //}
         
         do {
@@ -213,9 +245,16 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UITableView
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-       let causeDescObj = self.fetchedResultsController?.object(at: indexPath) as? Cause
-        print(causeDescObj?.causeDesc as Any)
-        performSegue(withIdentifier: "toCauseTVCSegue", sender: self)
+        //let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        //let managedContext = appDelegate?.persistentContainer.viewContext
+        let wordToSave = self.fetchedResultsController?.object(at: indexPath) as! Cause
+        
+        print(wordToSave.causeDesc as Any)
+        self.causeTextView.text = wordToSave.causeDesc
+        causeTextView.isEditable = false
+        changeTitle(title: "Select")
+        
+        
     }
     
     

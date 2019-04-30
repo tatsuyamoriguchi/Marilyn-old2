@@ -166,10 +166,10 @@
                                     <constraint firstAttribute="height" constant="120" id="oV9-u3-JCt"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="yes"/>
                             </textView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bhy-R0-iK5">
-                                <rect key="frame" x="0.0" y="200" width="375" height="418"/>
+                                <rect key="frame" x="0.0" y="240" width="375" height="378"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CauseDescCell" id="aPv-6C-M8j">
@@ -186,35 +186,62 @@
                                     <outlet property="delegate" destination="4tn-F3-9h9" id="ST4-sU-LHW"/>
                                 </connections>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7PJ-9E-IZ4">
+                                <rect key="frame" x="8" y="200" width="359" height="32"/>
+                                <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                <state key="normal" title="Clear Text to Type New">
+                                    <color key="titleColor" red="0.47684186699999997" green="0.50480759139999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearToAddNewOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="nf6-vn-926"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="D85-QC-Ce6"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="7PJ-9E-IZ4" secondAttribute="bottom" constant="8" id="LXB-wH-2zZ"/>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" id="NbK-f1-n00"/>
-                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="Ugf-fR-reU"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="48" id="Ugf-fR-reU"/>
                             <constraint firstItem="Ydg-7x-t9s" firstAttribute="bottom" secondItem="Bhy-R0-iK5" secondAttribute="bottom" id="aaT-eq-BBe"/>
                             <constraint firstItem="fjb-qG-275" firstAttribute="top" secondItem="Ydg-7x-t9s" secondAttribute="top" constant="8" id="lep-2q-6Nu"/>
                             <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="Bhy-R0-iK5" secondAttribute="trailing" id="tx6-Ck-ClG"/>
+                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="7PJ-9E-IZ4" secondAttribute="trailing" constant="8" id="uKl-a5-K0A"/>
                             <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="fjb-qG-275" secondAttribute="trailing" constant="8" id="vhy-qH-LOv"/>
                             <constraint firstItem="fjb-qG-275" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="xCy-rB-A5b"/>
+                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="y9m-VI-ImG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ydg-7x-t9s"/>
                     </view>
                     <navigationItem key="navigationItem" title="Cause/Reason" id="kdc-bz-XVK">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="OhK-dA-BvD">
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="bQY-VN-2rx">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7Bc-Cs-Hnv">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.83234566450000003" blue="0.47320586440000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" red="0.47684186699999997" green="0.50480759139999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="saveOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="Efj-5z-OXh"/>
+                                </connections>
+                            </button>
                             <connections>
-                                <action selector="saveOnPressed:" destination="4tn-F3-9h9" id="RZ4-Yd-9Ua"/>
+                                <action selector="saveOnPressed:" destination="4tn-F3-9h9" id="XYE-me-BuJ"/>
+                                <segue destination="soB-9T-bIG" kind="show" identifier="toCauseTVCSegue" id="SaK-pg-oYU"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="causeTextView" destination="fjb-qG-275" id="rdd-D2-BBt"/>
                         <outlet property="tableView" destination="Bhy-R0-iK5" id="KGL-0A-WRm"/>
-                        <segue destination="soB-9T-bIG" kind="show" identifier="toCauseTVCSegue" id="qcc-Ho-oSo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lTC-bD-TOk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3358" y="-197"/>
+            <point key="canvasLocation" x="3357.5999999999999" y="-197.45127436281859"/>
         </scene>
         <!--Location-->
         <scene sceneID="Xsi-Vq-gJu">
