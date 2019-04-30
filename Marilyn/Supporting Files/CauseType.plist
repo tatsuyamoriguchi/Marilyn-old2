@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>Relationship</string>
+	<string>Personal Productivity</string>
+	<string>Skil Learning</string>
+	<string>Business &amp; Customers</string>
+	<string>Management</string>
+	<string>Lifestyle</string>
+	<string>Behavior Attitude</string>
+	<string>Hobbies</string>
+	<string>Shopping</string>
+	<string>Foods, Drinks, &amp; Diet</string>
+	<string>Households</string>
+	<string>Family</string>
+	<string>Finance</string>
+	<string>Job</string>
+	<string>Workplace</string>
+	<string>Taxes</string>
+	<string>Health</string>
+	<string>Physical Fitness</string>
+	<string>Spending</string>
+	<string>Gambling</string>
+	<string>Narcotic &amp; Smoking</string>
+	<string>Music</string>
+</array>
+</plist>
