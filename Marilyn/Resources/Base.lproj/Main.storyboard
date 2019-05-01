@@ -105,7 +105,7 @@
                             <outlet property="delegate" destination="M4o-WS-MAT" id="DQP-t3-hY7"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="State of Mind" prompt="Select an adjective that descrives how you feel now." largeTitleDisplayMode="always" id="S4U-dl-C7o">
+                    <navigationItem key="navigationItem" title="State of Mind" prompt="Select an adjective that descrives how you feel now." id="S4U-dl-C7o">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="fb2-4J-2hN">
                             <connections>
                                 <action selector="addNewOnPressed:" destination="M4o-WS-MAT" id="eVY-EK-Z9X"/>
@@ -200,17 +200,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="D85-QC-Ce6"/>
-                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="7PJ-9E-IZ4" secondAttribute="bottom" constant="8" id="LXB-wH-2zZ"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="7PJ-9E-IZ4" secondAttribute="bottom" constant="8" id="4lA-6b-axb"/>
+                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="MZh-zN-fUy"/>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" id="NbK-f1-n00"/>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="48" id="Ugf-fR-reU"/>
                             <constraint firstItem="Ydg-7x-t9s" firstAttribute="bottom" secondItem="Bhy-R0-iK5" secondAttribute="bottom" id="aaT-eq-BBe"/>
+                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="faB-hS-P7M"/>
                             <constraint firstItem="fjb-qG-275" firstAttribute="top" secondItem="Ydg-7x-t9s" secondAttribute="top" constant="8" id="lep-2q-6Nu"/>
+                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="7PJ-9E-IZ4" secondAttribute="trailing" constant="8" id="rBF-Bq-dbf"/>
                             <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="Bhy-R0-iK5" secondAttribute="trailing" id="tx6-Ck-ClG"/>
-                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="7PJ-9E-IZ4" secondAttribute="trailing" constant="8" id="uKl-a5-K0A"/>
                             <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="fjb-qG-275" secondAttribute="trailing" constant="8" id="vhy-qH-LOv"/>
                             <constraint firstItem="fjb-qG-275" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="xCy-rB-A5b"/>
-                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="y9m-VI-ImG"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ydg-7x-t9s"/>
                     </view>

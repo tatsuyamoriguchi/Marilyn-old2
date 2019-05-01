@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Cause" representedClassName="Cause" syncable="YES" codeGenerationType="class">
         <attribute name="causeDesc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timeStamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="stateOfMind" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StateOfMind" inverseName="cause" inverseEntity="StateOfMind" syncable="YES"/>
     </entity>
     <entity name="CauseType" representedClassName="CauseType" syncable="YES" codeGenerationType="class">
@@ -27,7 +28,7 @@
         <relationship name="stateOfMindRate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StateOfMind" inverseName="stateOfMindRate" inverseEntity="StateOfMind" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Cause" positionX="190.45703125" positionY="-276.125" width="128" height="75"/>
+        <element name="Cause" positionX="190.45703125" positionY="-276.125" width="128" height="90"/>
         <element name="CauseType" positionX="188.72265625" positionY="-173.26171875" width="128" height="75"/>
         <element name="Location" positionX="-12.29296875" positionY="-22.49609375" width="128" height="30"/>
         <element name="StateOfMind" positionX="-233.3515625" positionY="-138.1875" width="128" height="135"/>

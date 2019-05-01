@@ -18,8 +18,17 @@ class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate
         configureFetchedResultsController()
         
         tableView.dataSource = self
+        setupNaviBar()
         
     }
+    
+    func setupNaviBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        let searchController = UISearchController(searchResultsController: nil)
+        navigationItem.searchController = searchController
+        
+    }
+    
 
     private func configureFetchedResultsController() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {

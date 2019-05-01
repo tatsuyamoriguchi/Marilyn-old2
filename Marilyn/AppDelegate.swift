@@ -54,9 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         switch file {
                         case "CauseDesc":
                             if let arrayContents = NSArray(contentsOf: urlPath) as? [String] {
+                                let now = Date()
                                 for item in arrayContents {
                                     let dataObject = Cause(context: backgroundContext)
                                     dataObject.causeDesc = item
+                                    dataObject.timeStamp = now
                                 }
                             }
                         case "CauseType":

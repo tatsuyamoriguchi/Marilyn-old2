@@ -56,6 +56,9 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
             default:
                 print("")
             }
+            
+            wordToSave?.setValue(Date(), forKey: "timeStamp")
+
             causeTextView.text = ""
             causeTextView.isEditable = true
             changeTitle(title: "Add New")
@@ -111,9 +114,11 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
         // Create the fetch request, set some sort descriptor, then feed the fetchedResultsController
         // the request with along with the managed object context, which we'll use the view context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Cause")
-        let sortDescriptorType = NSSortDescriptor(key: "causeDesc", ascending: true)
+        //let sortDescriptorType = NSSortDescriptor(key: "causeDesc", ascending: true)
+        let sortDescriptorTypeTime = NSSortDescriptor(key: "timeStamp", ascending: false)
        
-        fetchRequest.sortDescriptors = [sortDescriptorType]
+        //fetchRequest.sortDescriptors = [sortDescriptorTypeTime, sortDescriptorType]
+        fetchRequest.sortDescriptors = [sortDescriptorTypeTime]
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController?.delegate = self //as? NSFetchedResultsControllerDelegate
         
@@ -134,6 +139,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
         let item = NSManagedObject(entity: entity, insertInto: managedContext)
         item.setValue(itemName, forKey: "causeDesc")
         
+        //item.setValue(Date(), forKey: "timeStamp")
         wordToSave = item as? Cause
         
         do {
@@ -179,6 +185,8 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
     func update(itemToUpdate: NSManagedObject, itemName: String) {
         print("update itemToUpdate: \(itemToUpdate)")
         itemToUpdate.setValue(itemName, forKey: "causeDesc")
+       // itemToUpdate.setValue(Date(), forKey: "timeStamp")
+
         buttonMode = "Update"
         causeTextView.text = ""
         self.causeTextView.isEditable = true

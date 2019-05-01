@@ -3,10 +3,12 @@
 <plist version="1.0">
 <array>
 	<string>Relationship</string>
+	<string>SNS, messaging, email, Online Communication</string>
 	<string>Personal Productivity</string>
 	<string>Skil Learning</string>
 	<string>Business &amp; Customers</string>
 	<string>Management</string>
+	<string>Commuting</string>
 	<string>Lifestyle</string>
 	<string>Behavior Attitude</string>
 	<string>Hobbies</string>
@@ -17,6 +19,7 @@
 	<string>Finance</string>
 	<string>Job</string>
 	<string>Workplace</string>
+	<string>School</string>
 	<string>Taxes</string>
 	<string>Health</string>
 	<string>Physical Fitness</string>
@@ -24,5 +27,8 @@
 	<string>Gambling</string>
 	<string>Narcotic &amp; Smoking</string>
 	<string>Music</string>
+	<string>Neighborhood, Community</string>
+	<string>Social activities, gathering, parties</string>
+	<string>Night life activities, bar, club</string>
 </array>
 </plist>
