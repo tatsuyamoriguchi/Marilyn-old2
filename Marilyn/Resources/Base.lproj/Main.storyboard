@@ -178,14 +178,9 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bhy-R0-iK5">
                                 <rect key="frame" x="0.0" y="224" width="375" height="394"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="s7A-z6-XZm">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CauseDescCell" id="aPv-6C-M8j">
-                                        <rect key="frame" x="0.0" y="84" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aPv-6C-M8j" id="ah2-VA-9yr">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -269,7 +264,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="causeTextView" destination="fjb-qG-275" id="rdd-D2-BBt"/>
-                        <outlet property="searchBar" destination="s7A-z6-XZm" id="ktu-S4-JBq"/>
                         <outlet property="tableView" destination="Bhy-R0-iK5" id="KGL-0A-WRm"/>
                     </connections>
                 </viewController>

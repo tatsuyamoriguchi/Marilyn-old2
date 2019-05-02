@@ -23,8 +23,6 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
     let searchController = UISearchController(searchResultsController: nil)
 
     
-    @IBOutlet weak var searchBar: UISearchBar!
-    
     @IBOutlet weak var causeTextView: UITextView!
     @IBOutlet weak var tableView: UITableView!
     
@@ -76,8 +74,6 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
             causeTextView.isEditable = true
             changeTitle(title: "Add New")
             performSegue(withIdentifier: "toCauseTVCSegue", sender: wordToSave)
-            
-
   
         }
     }
@@ -88,7 +84,6 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
         configureFetchedResultsController()
         tableView.dataSource = self
         tableView.dataSource = self
-
         
         navBar()
         // To dismiss a keyboard
@@ -108,19 +103,17 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
     
     func navBar() {
         self.navigationItem.prompt = "Your Current State of Mind: \(stateOfMindDesc.adjective ?? adjectiveError)"
+        navigationController?.navigationBar.prefersLargeTitles = true
         
+        // Search Bar
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = "Search Cause"
         tableView.tableHeaderView = searchController.searchBar
-        
         //navigationItem.searchController = searchController
         
         definesPresentationContext = true
-        
-        
-        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     // Search bar
@@ -356,8 +349,5 @@ extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource {
         print("The Controller Content Has Changed.")
         tableView.reloadData()
     }
-    
-
-    
 }
 
