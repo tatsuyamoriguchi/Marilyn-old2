@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CauseDescViewController: UIViewController, UITextViewDelegate {
+class CauseDescViewController: UIViewController, UITextViewDelegate, UISearchResultsUpdating, UISearchBarDelegate {
  
     // Passed from StateOfMindTVC via segue
     var stateOfMindDesc: StateOfMindDesc!
@@ -19,6 +19,11 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
     let adjectiveError = "Adjective was not selected."
     
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+ 
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    
+    @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var causeTextView: UITextView!
     @IBOutlet weak var tableView: UITableView!
@@ -30,7 +35,14 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
         self.causeTextView.isEditable = true
         
     }
- 
+  
+    // Undo Search to display all causes
+    @IBAction func undoOnPressed(_ sender: UIButton) {
+        configureFetchedResultsController()
+        tableView.reloadData()
+        
+    }
+    
     
     @IBAction func saveOnPressed(_ sender: Any) {
         
@@ -70,14 +82,15 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
         }
     }
     
+    // MARK: -viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
         configureFetchedResultsController()
         tableView.dataSource = self
         tableView.dataSource = self
 
-        self.navigationItem.prompt = "Your Current State of Mind: \(stateOfMindDesc.adjective ?? adjectiveError)"
-        
+        searchBar.delegate = self
+        navBar()
         // To dismiss a keyboard
         causeTextView.delegate = self // as? UITextViewDelegate
         
@@ -92,6 +105,40 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
         causeTextView.selectedTextRange = causeTextView.textRange(from: newPosition, to: newPosition)
         
     }
+    
+    func navBar() {
+        self.navigationItem.prompt = "Your Current State of Mind: \(stateOfMindDesc.adjective ?? adjectiveError)"
+        searchController.searchBar.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search Cause"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    // Search bar
+    func updateSearchResults(for searchController: UISearchController) {
+        let text = searchController.searchBar.text
+        if (text?.isEmpty)! {
+            print("updateSearchResults text?.isEmpty ")
+            
+            //configureFetchedResultsController()
+            //tableView.reloadData()
+            
+        } else {
+            self.fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(causeDesc contains[c] %@ )", text!)
+        }
+        do {
+            try self.fetchedResultsController?.performFetch()
+            self.tableView.reloadData()
+        } catch { print(error) }
+    }
+    
+    
     
     // Change Navigation Bar Item Button Title, dynamically
     func changeTitle(title: String) {
@@ -203,7 +250,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
             let destVC = segue.destination as! CauseTableViewController
             destVC.stateOfMindDesc = stateOfMindDesc
 
-            print("wordToSave on segue: \(self.wordToSave)")
+            //print("wordToSave on segue: \(self.wordToSave)")
             destVC.causeDesc = wordToSave
             
         }
@@ -244,7 +291,7 @@ extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource, N
         let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
             
             //if let wordToSave = self.fetchedResultsController?.object(at: indexPath) as? Cause {
-            print("Editing: \(self.wordToSave)")
+            //print("Editing: \(self.wordToSave)")
             self.causeTextView.text = self.wordToSave!.causeDesc
             
             //let causeDescToUpdate = wordToSave.causeDesc

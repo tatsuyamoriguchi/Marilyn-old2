@@ -85,14 +85,14 @@ class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate
         }
     }
     
-   func searchBarIsEmpty() -> Bool {
+/*   func searchBarIsEmpty() -> Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
     func isFilterting() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
- 
+ */
     
     @IBAction func addNewOnPressed(_ sender: UIBarButtonItem) {
     
@@ -372,10 +372,10 @@ class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate
         
         let stateOfMindDesc = self.fetchedResultsController?.object(at: indexPath) as? StateOfMindDesc
         
-        print("didSelectRowAt")
+        /*print("didSelectRowAt")
         print("stateOfMindDesc.adjective: \(stateOfMindDesc!.adjective)")
         print("stateOfMindDesc.rate: \(stateOfMindDesc!.rate)")
-        
+        */
     }
 
     

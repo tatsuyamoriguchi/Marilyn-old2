@@ -167,20 +167,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="fjb-qG-275">
-                                <rect key="frame" x="8" y="72" width="359" height="120"/>
+                                <rect key="frame" x="8" y="64" width="359" height="108"/>
                                 <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="120" id="oV9-u3-JCt"/>
+                                    <constraint firstAttribute="height" constant="108" id="Dhi-Ko-2PR"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" spellCheckingType="yes"/>
                             </textView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Bhy-R0-iK5">
-                                <rect key="frame" x="0.0" y="240" width="375" height="378"/>
+                                <rect key="frame" x="0.0" y="224" width="375" height="394"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" id="s7A-z6-XZm">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CauseDescCell" id="aPv-6C-M8j">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <rect key="frame" x="0.0" y="84" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aPv-6C-M8j" id="ah2-VA-9yr">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -193,11 +198,31 @@
                                     <outlet property="delegate" destination="4tn-F3-9h9" id="ST4-sU-LHW"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7PJ-9E-IZ4">
-                                <rect key="frame" x="8" y="200" width="359" height="32"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DdT-ED-fIl">
+                                <rect key="frame" x="269" y="180" width="90" height="36"/>
                                 <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
-                                <state key="normal" title="Clear Text to Type New">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="2If-wa-VOH"/>
+                                    <constraint firstAttribute="width" constant="90" id="Ch8-Um-ELN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
+                                <state key="normal" title="Undo Search">
+                                    <color key="titleColor" red="0.47684186699999997" green="0.50480759139999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearToAddNewOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="8gf-YR-Tbb"/>
+                                    <action selector="undoOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="bdY-HJ-oth"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7PJ-9E-IZ4">
+                                <rect key="frame" x="16" y="180" width="90" height="36"/>
+                                <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="MZl-gT-gvw"/>
+                                    <constraint firstAttribute="width" constant="90" id="WgE-kg-NGV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
+                                <state key="normal" title="Clear Text">
                                     <color key="titleColor" red="0.47684186699999997" green="0.50480759139999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -207,22 +232,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="7PJ-9E-IZ4" secondAttribute="bottom" constant="8" id="4lA-6b-axb"/>
-                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="MZh-zN-fUy"/>
-                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" id="NbK-f1-n00"/>
-                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="48" id="Ugf-fR-reU"/>
-                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="bottom" secondItem="Bhy-R0-iK5" secondAttribute="bottom" id="aaT-eq-BBe"/>
-                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="faB-hS-P7M"/>
-                            <constraint firstItem="fjb-qG-275" firstAttribute="top" secondItem="Ydg-7x-t9s" secondAttribute="top" constant="8" id="lep-2q-6Nu"/>
-                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="7PJ-9E-IZ4" secondAttribute="trailing" constant="8" id="rBF-Bq-dbf"/>
-                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="Bhy-R0-iK5" secondAttribute="trailing" id="tx6-Ck-ClG"/>
-                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="fjb-qG-275" secondAttribute="trailing" constant="8" id="vhy-qH-LOv"/>
-                            <constraint firstItem="fjb-qG-275" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="xCy-rB-A5b"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="DdT-ED-fIl" secondAttribute="bottom" constant="8" id="Ceh-2N-VvA"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="bottom" secondItem="Ydg-7x-t9s" secondAttribute="bottom" id="CgO-TD-9bi"/>
+                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="DdT-ED-fIl" secondAttribute="trailing" constant="16" id="EI4-SU-cCr"/>
+                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="ELj-23-QuL"/>
+                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="16" id="NFX-le-TRb"/>
+                            <constraint firstItem="7PJ-9E-IZ4" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="16" id="P4w-Jb-F2W"/>
+                            <constraint firstItem="DdT-ED-fIl" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="S6M-7d-m0p"/>
+                            <constraint firstItem="fjb-qG-275" firstAttribute="top" secondItem="Ydg-7x-t9s" secondAttribute="top" id="Uih-gl-SEx"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="trailing" secondItem="Ydg-7x-t9s" secondAttribute="trailing" id="ah2-Ec-Veb"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" id="kuB-Sb-Ws3"/>
+                            <constraint firstItem="fjb-qG-275" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="nbR-7h-x8f"/>
+                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="fjb-qG-275" secondAttribute="trailing" constant="8" id="vUy-M4-nBi"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ydg-7x-t9s"/>
                     </view>
                     <navigationItem key="navigationItem" title="Cause or Reason" id="kdc-bz-XVK">
-                        <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="bQY-VN-2rx">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="bQY-VN-2rx">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7Bc-Cs-Hnv">
                                 <rect key="frame" x="276" y="4" width="83" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -243,6 +269,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="causeTextView" destination="fjb-qG-275" id="rdd-D2-BBt"/>
+                        <outlet property="searchBar" destination="s7A-z6-XZm" id="ktu-S4-JBq"/>
                         <outlet property="tableView" destination="Bhy-R0-iK5" id="KGL-0A-WRm"/>
                     </connections>
                 </viewController>
