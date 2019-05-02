@@ -59,10 +59,12 @@ class CauseDescViewController: UIViewController, UITextViewDelegate {
             
             wordToSave?.setValue(Date(), forKey: "timeStamp")
 
+            view.endEditing(true)
             causeTextView.text = ""
             causeTextView.isEditable = true
             changeTitle(title: "Add New")
             performSegue(withIdentifier: "toCauseTVCSegue", sender: wordToSave)
+            
 
   
         }

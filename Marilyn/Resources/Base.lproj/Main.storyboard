@@ -106,11 +106,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="State of Mind" prompt="Select an adjective that descrives how you feel now." id="S4U-dl-C7o">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="fb2-4J-2hN">
-                            <connections>
-                                <action selector="addNewOnPressed:" destination="M4o-WS-MAT" id="eVY-EK-Z9X"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="fb2-4J-2hN">
+                                <connections>
+                                    <action selector="addNewOnPressed:" destination="M4o-WS-MAT" id="eVY-EK-Z9X"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="undo" id="mMM-Xf-IRU">
+                                <connections>
+                                    <action selector="undoOnPressed:" destination="M4o-WS-MAT" id="HmB-Pe-5Ua"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zda-QV-urQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -151,7 +158,7 @@
             </objects>
             <point key="canvasLocation" x="4386" y="-197"/>
         </scene>
-        <!--Cause/Reason-->
+        <!--Cause or Reason-->
         <scene sceneID="uPi-SX-18A">
             <objects>
                 <viewController id="4tn-F3-9h9" customClass="CauseDescViewController" customModule="Marilyn" customModuleProvider="target" sceneMemberID="viewController">
@@ -214,7 +221,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ydg-7x-t9s"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Cause/Reason" id="kdc-bz-XVK">
+                    <navigationItem key="navigationItem" title="Cause or Reason" id="kdc-bz-XVK">
                         <barButtonItem key="rightBarButtonItem" title="Item" style="plain" id="bQY-VN-2rx">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7Bc-Cs-Hnv">
                                 <rect key="frame" x="276" y="4" width="83" height="36"/>

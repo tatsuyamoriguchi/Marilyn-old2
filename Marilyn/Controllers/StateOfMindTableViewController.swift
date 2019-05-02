@@ -9,27 +9,62 @@
 import UIKit
 import CoreData
 
-class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate {
-
+class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+ 
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+   
+        navBar()
+        
         configureFetchedResultsController()
-        
         tableView.dataSource = self
-        setupNaviBar()
-        
+        tableView.reloadData()
     }
     
-    func setupNaviBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        let searchController = UISearchController(searchResultsController: nil)
-        navigationItem.searchController = searchController
+    @IBAction func undoOnPressed(_ sender: UIBarButtonItem) {
+    
+    configureFetchedResultsController()
+        tableView.reloadData()
+    }
+    
+    func navBar() {
+        searchController.searchBar.delegate = self
         
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search Adjective"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
 
+    // Search bar
+    func updateSearchResults(for searchController: UISearchController) {
+        let text = searchController.searchBar.text
+        if (text?.isEmpty)! {
+            print("updateSearchResults text?.isEmpty ")
+            
+            //configureFetchedResultsController()
+            //tableView.reloadData()
+            
+        } else {
+            self.fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(adjective contains[c] %@ )", text!)
+        }
+        do {
+            try self.fetchedResultsController?.performFetch()
+            self.tableView.reloadData()
+        } catch { print(error) }
+    }
+ 
+ 
+  
     private func configureFetchedResultsController() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -48,10 +83,17 @@ class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate
         } catch {
             print(error.localizedDescription)
         }
-        
     }
     
+   func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFilterting() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
  
+    
     @IBAction func addNewOnPressed(_ sender: UIBarButtonItem) {
     
         // Pass empty strings to add a new item
@@ -162,28 +204,50 @@ class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
+
         guard let sections = fetchedResultsController?.sections else {
             return 0
         }
         return sections.count
     }
 
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sections = fetchedResultsController?.sections else {
-            return 0
-        }
-        let rowCount = sections[section].numberOfObjects
-        print("The amount of rows in the section are: \(rowCount)")
+       /* if (isFilterting()) {
+            print("filteredAdjectives.count: \(filteredAdjectives.count)")
+            return filteredAdjectives.count
 
-        return rowCount
+        } else {
+         */
+        guard let sections = fetchedResultsController?.sections else {
+                return 0
+            }
+            let rowCount = sections[section].numberOfObjects
+            print("The amount of rows in the segction are: \(rowCount)")
+            
+            return rowCount
+            
+        //}
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let StateOfMindCell = tableView.dequeueReusableCell(withIdentifier: "StateOfMindCell", for: indexPath)
-        if let stateOfMindDesc = fetchedResultsController?.object(at: indexPath) as? StateOfMindDesc {
-            StateOfMindCell.textLabel?.text = stateOfMindDesc.adjective
-            StateOfMindCell.detailTextLabel?.text = stateOfMindDesc.rate as AnyObject as? String
-        }
+        
+        //let adjective: StateOfMindDesc
+  /*     if isFilterting() {
+
+            let adj = filteredAdjectives[indexPath.row]
+                StateOfMindCell.textLabel?.text = adj.adjective
+                StateOfMindCell.detailTextLabel?.text = adj.rate as AnyObject as? String
+            
+        } else {
+ */
+            if let stateOfMindDesc = fetchedResultsController?.object(at: indexPath) as? StateOfMindDesc {
+                StateOfMindCell.textLabel?.text = stateOfMindDesc.adjective
+                StateOfMindCell.detailTextLabel?.text = stateOfMindDesc.rate as AnyObject as? String
+                
+            }
+      //  }
         return StateOfMindCell
     }
     
