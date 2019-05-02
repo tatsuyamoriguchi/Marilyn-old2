@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class CauseDescViewController: UIViewController, UITextViewDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedResultsControllerDelegate, UISearchResultsUpdating, UISearchBarDelegate {
  
     // Passed from StateOfMindTVC via segue
     var stateOfMindDesc: StateOfMindDesc!
@@ -19,9 +19,9 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UISearchRes
     let adjectiveError = "Adjective was not selected."
     
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
- 
+  
     let searchController = UISearchController(searchResultsController: nil)
-    
+
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -89,7 +89,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UISearchRes
         tableView.dataSource = self
         tableView.dataSource = self
 
-        searchBar.delegate = self
+        
         navBar()
         // To dismiss a keyboard
         causeTextView.delegate = self // as? UITextViewDelegate
@@ -108,12 +108,15 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UISearchRes
     
     func navBar() {
         self.navigationItem.prompt = "Your Current State of Mind: \(stateOfMindDesc.adjective ?? adjectiveError)"
-        searchController.searchBar.delegate = self
         
+        searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = "Search Cause"
-        navigationItem.searchController = searchController
+        tableView.tableHeaderView = searchController.searchBar
+        
+        //navigationItem.searchController = searchController
+        
         definesPresentationContext = true
         
         
@@ -137,6 +140,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UISearchRes
             self.tableView.reloadData()
         } catch { print(error) }
     }
+    
     
     
     
@@ -259,8 +263,12 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, UISearchRes
 }
 
 
-extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate {
+extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource {
     //UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate
+    
+   
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let sections = fetchedResultsController?.sections else {
             print("numberOfRowsInSection failed.")
