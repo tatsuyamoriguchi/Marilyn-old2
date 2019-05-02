@@ -140,9 +140,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="ezh-Uc-Du4" kind="show" identifier="toLocationTVCSegue" id="s0E-8a-zwS"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -153,6 +150,9 @@
                     <navigationItem key="navigationItem" title="Type of Cause/Reason" prompt="Select or add a cause or reason of your current state of mind." largeTitleDisplayMode="always" id="Tj2-XQ-azb">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="B1Q-is-qXw"/>
                     </navigationItem>
+                    <connections>
+                        <segue destination="ezh-Uc-Du4" kind="show" identifier="toLocationTVCSegue" id="kPi-fI-edq"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c2M-Qn-X9H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

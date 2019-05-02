@@ -13,9 +13,10 @@ class CauseTableViewController: UITableViewController {
 
     // Passed from CauseDescVC via segue
     var stateOfMindDesc: StateOfMindDesc!
-    let adjectiveError = "Adjective was not selected."
     var causeDesc: Cause!
+    var causeTypeSelected: CauseType!
     
+    let adjectiveError = "Adjective was not selected."
     
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
@@ -93,6 +94,14 @@ class CauseTableViewController: UITableViewController {
       
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        causeTypeSelected = self.fetchedResultsController?.object(at: indexPath) as? CauseType
+        print("This is didSelectRowAt of CauseTVC")
+        print(causeTypeSelected?.type as Any)
+        
+        performSegue(withIdentifier: "toLocationTVCSegue", sender: causeTypeSelected)
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -129,14 +138,20 @@ class CauseTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toLocationTVCSegue" {
+            let destVC = segue.destination as! LocationTableViewController
+            destVC.stateOfMindDesc = stateOfMindDesc
+            destVC.causeDesc = causeDesc
+            destVC.causeTypeSelected = causeTypeSelected
+        }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }

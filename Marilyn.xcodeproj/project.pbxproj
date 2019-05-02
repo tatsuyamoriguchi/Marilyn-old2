@@ -58,12 +58,12 @@
 		8C75104022775E9900D6282C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				8CCB162822752A72008580D0 /* CauseTableViewController.swift */,
-				8C75103E22775E7200D6282C /* CauseDescViewController.swift */,
-				8CB178202268E4BA00EF193D /* DashboardViewController.swift */,
-				8CCB162A22752A9B008580D0 /* LocationTableViewController.swift */,
 				8C49E5C32273C611008557FB /* RootUITabBarController.swift */,
+				8CB178202268E4BA00EF193D /* DashboardViewController.swift */,
 				8CCB162622752A47008580D0 /* StateOfMindTableViewController.swift */,
+				8C75103E22775E7200D6282C /* CauseDescViewController.swift */,
+				8CCB162822752A72008580D0 /* CauseTableViewController.swift */,
+				8CCB162A22752A9B008580D0 /* LocationTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

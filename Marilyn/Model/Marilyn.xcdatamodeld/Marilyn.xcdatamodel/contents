@@ -10,7 +10,9 @@
         <relationship name="stateOfMind" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StateOfMind" inverseName="causeType" inverseEntity="StateOfMind" syncable="YES"/>
     </entity>
     <entity name="Location" representedClassName="Location" syncable="YES" codeGenerationType="class">
-        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locationType" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="stateOfMind" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="StateOfMind" inverseName="location" inverseEntity="StateOfMind" syncable="YES"/>
     </entity>
     <entity name="StateOfMind" representedClassName="StateOfMind" syncable="YES" codeGenerationType="class">
@@ -30,7 +32,7 @@
     <elements>
         <element name="Cause" positionX="190.45703125" positionY="-276.125" width="128" height="90"/>
         <element name="CauseType" positionX="188.72265625" positionY="-173.26171875" width="128" height="75"/>
-        <element name="Location" positionX="-12.29296875" positionY="-22.49609375" width="128" height="30"/>
+        <element name="Location" positionX="-12.29296875" positionY="-22.49609375" width="128" height="105"/>
         <element name="StateOfMind" positionX="-233.3515625" positionY="-138.1875" width="128" height="135"/>
         <element name="StateOfMindDesc" positionX="212.58984375" positionY="63.96484375" width="128" height="105"/>
     </elements>

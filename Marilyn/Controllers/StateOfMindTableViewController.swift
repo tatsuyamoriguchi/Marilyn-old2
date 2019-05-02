@@ -232,16 +232,7 @@ class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let StateOfMindCell = tableView.dequeueReusableCell(withIdentifier: "StateOfMindCell", for: indexPath)
-        
-        //let adjective: StateOfMindDesc
-  /*     if isFilterting() {
 
-            let adj = filteredAdjectives[indexPath.row]
-                StateOfMindCell.textLabel?.text = adj.adjective
-                StateOfMindCell.detailTextLabel?.text = adj.rate as AnyObject as? String
-            
-        } else {
- */
             if let stateOfMindDesc = fetchedResultsController?.object(at: indexPath) as? StateOfMindDesc {
                 StateOfMindCell.textLabel?.text = stateOfMindDesc.adjective
                 StateOfMindCell.detailTextLabel?.text = stateOfMindDesc.rate as AnyObject as? String
