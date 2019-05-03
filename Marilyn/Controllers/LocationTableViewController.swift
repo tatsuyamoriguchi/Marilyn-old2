@@ -32,7 +32,6 @@ class LocationTableViewController: UITableViewController {
         })
     }
     
-        
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +58,7 @@ class LocationTableViewController: UITableViewController {
         // Create the fetch request, set some sort descriptor, then feed the fetchedResultsController
         // the request with along with the managed object context, which we'll use the view context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
-        let sortDescriptorType = NSSortDescriptor(key: "location", ascending: true)
+        let sortDescriptorType = NSSortDescriptor(key: "locationName", ascending: true)
         
         
         fetchRequest.sortDescriptors = [sortDescriptorType]
@@ -96,7 +95,7 @@ class LocationTableViewController: UITableViewController {
         let LocationCell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
         
         if let loca = fetchedResultsController?.object(at: indexPath) as? Location {
-            LocationCell.textLabel?.text = loca.location
+            LocationCell.textLabel?.text = loca.locationName
         }
         return LocationCell
     }

@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             if let arrayContents = NSArray(contentsOf: urlPath) as? [String] {
                                 for item in arrayContents {
                                     let dataObject = Location(context: backgroundContext)
-                                    dataObject.location = item
+                                    dataObject.locationName = item
                                 }
                             }
                         case "StateOfMindDesc":
