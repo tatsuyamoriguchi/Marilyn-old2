@@ -71,14 +71,14 @@ class LocationViewController: UIViewController {
     }
     
     
-    func save(locationType: String) {
+    func save(locationName: String) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         
         let entity = NSEntityDescription.entity(forEntityName: "stateOfMind", in: managedContext)!
         let item = NSManagedObject(entity: entity, insertInto: managedContext)
         
-        item.setValue(locationType, forKey: "stateOfMind.location")
+        item.setValue(locationName, forKey: "stateOfMind.location")
         
         do {
             try managedContext.save()
@@ -108,7 +108,7 @@ class LocationViewController: UIViewController {
         // Create the fetch request, set some sort descriptor, then feed the fetchedResultsController
         // the request with along with the managed object context, which we'll use the view context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
-        let sortDescriptorType = NSSortDescriptor(key: "locationType", ascending: true)
+        let sortDescriptorType = NSSortDescriptor(key: "locationName", ascending: true)
         
         fetchRequest.sortDescriptors = [sortDescriptorType]
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -120,8 +120,6 @@ class LocationViewController: UIViewController {
         }
     }
     
-
-
     /*
     // MARK: - Navigation
 
@@ -131,7 +129,6 @@ class LocationViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }
 
 extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
@@ -156,7 +153,7 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         let LocationCell = tableView.dequeueReusableCell(withIdentifier: "LocationCell", for: indexPath)
         
         if let loca = fetchedResultsController?.object(at: indexPath) as? Location {
-            LocationCell.textLabel?.text = loca.locationType
+            LocationCell.textLabel?.text = loca.locationName
         }
         return LocationCell
     }
