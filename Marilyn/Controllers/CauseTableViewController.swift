@@ -144,7 +144,7 @@ class CauseTableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toLocationTVCSegue" {
-            let destVC = segue.destination as! LocationTableViewController
+            let destVC = segue.destination as! LocationViewController
             destVC.stateOfMindDesc = stateOfMindDesc
             destVC.causeDesc = causeDesc
             destVC.causeTypeSelected = causeTypeSelected

@@ -183,9 +183,10 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
        
         let entity = NSEntityDescription.entity(forEntityName: "Cause", in: managedContext)!
         let item = NSManagedObject(entity: entity, insertInto: managedContext)
-        item.setValue(itemName, forKey: "causeDesc")
         
-        //item.setValue(Date(), forKey: "timeStamp")
+
+        item.setValue(itemName, forKey: "causeDesc")
+        item.setValue(Date(), forKey: "timeStamp")
         wordToSave = item as? Cause
         
         do {
@@ -277,7 +278,8 @@ extension CauseDescViewController: UITableViewDelegate, UITableViewDataSource {
         let CauseDescCell = tableView.dequeueReusableCell(withIdentifier: "CauseDescCell", for: indexPath)
         if let causeDesc = fetchedResultsController?.object(at: indexPath) as? Cause {
             CauseDescCell.textLabel?.text = causeDesc.causeDesc
-            //CauseCell.detailTextLabel?.text = causeType.type as AnyObject as? String
+            //let date = causeDesc.timeStamp?.description
+            //CauseDescCell.detailTextLabel?.text = date
         }
         return CauseDescCell
     }

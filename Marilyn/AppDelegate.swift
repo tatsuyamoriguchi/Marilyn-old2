@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         {
             // Preload
             
-            let dataFile = ["CauseDesc", "CauseType", "Location", "StateOfMindDesc"]
+            let dataFile = ["CauseDesc", "CauseType", "StateOfMindDesc"]
             
             for file in dataFile
             {
@@ -68,13 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     dataObject.type = item
                                 }
                             }
-                        case "Location":
-                            if let arrayContents = NSArray(contentsOf: urlPath) as? [String] {
-                                for item in arrayContents {
-                                    let dataObject = Location(context: backgroundContext)
-                                    dataObject.locationName = item
-                                }
-                            }
+                        
                         case "StateOfMindDesc":
                             if let dictContents = NSDictionary(contentsOf: urlPath) as? ([String : AnyObject]){
                                 for (itemA, itemB) in dictContents {

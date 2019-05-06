@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8C49E5C42273C611008557FB /* RootUITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C49E5C32273C611008557FB /* RootUITabBarController.swift */; };
+		8C5E89CE227E911200514434 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E89CD227E911200514434 /* LocationViewController.swift */; };
 		8C75103F22775E7200D6282C /* CauseDescViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C75103E22775E7200D6282C /* CauseDescViewController.swift */; };
 		8C8B6DF0227409DC00546772 /* Location.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C8B6DEF227409DC00546772 /* Location.plist */; };
 		8C9A57612277B994004949A1 /* CauseDesc.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8C9A57602277B994004949A1 /* CauseDesc.plist */; };
@@ -20,12 +21,12 @@
 		8CB178292268E4BD00EF193D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB178272268E4BD00EF193D /* LaunchScreen.storyboard */; };
 		8CCB162722752A47008580D0 /* StateOfMindTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB162622752A47008580D0 /* StateOfMindTableViewController.swift */; };
 		8CCB162922752A72008580D0 /* CauseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB162822752A72008580D0 /* CauseTableViewController.swift */; };
-		8CCB162B22752A9B008580D0 /* LocationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB162A22752A9B008580D0 /* LocationTableViewController.swift */; };
 		8CE8171D227418D800F776C1 /* StateOfMindDesc.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CE8171C227418D800F776C1 /* StateOfMindDesc.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		8C49E5C32273C611008557FB /* RootUITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootUITabBarController.swift; sourceTree = "<group>"; };
+		8C5E89CD227E911200514434 /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		8C75103E22775E7200D6282C /* CauseDescViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CauseDescViewController.swift; sourceTree = "<group>"; };
 		8C8B6DEF227409DC00546772 /* Location.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Location.plist; sourceTree = "<group>"; };
 		8C9A57602277B994004949A1 /* CauseDesc.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = CauseDesc.plist; sourceTree = "<group>"; };
@@ -40,7 +41,6 @@
 		8CB1782A2268E4BD00EF193D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8CCB162622752A47008580D0 /* StateOfMindTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateOfMindTableViewController.swift; sourceTree = "<group>"; };
 		8CCB162822752A72008580D0 /* CauseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CauseTableViewController.swift; sourceTree = "<group>"; };
-		8CCB162A22752A9B008580D0 /* LocationTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewController.swift; sourceTree = "<group>"; };
 		8CE8171C227418D800F776C1 /* StateOfMindDesc.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = StateOfMindDesc.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,7 +63,7 @@
 				8CCB162622752A47008580D0 /* StateOfMindTableViewController.swift */,
 				8C75103E22775E7200D6282C /* CauseDescViewController.swift */,
 				8CCB162822752A72008580D0 /* CauseTableViewController.swift */,
-				8CCB162A22752A9B008580D0 /* LocationTableViewController.swift */,
+				8C5E89CD227E911200514434 /* LocationViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -215,7 +215,7 @@
 				8CB1781D2268E4BA00EF193D /* AppDelegate.swift in Sources */,
 				8C49E5C42273C611008557FB /* RootUITabBarController.swift in Sources */,
 				8CCB162722752A47008580D0 /* StateOfMindTableViewController.swift in Sources */,
-				8CCB162B22752A9B008580D0 /* LocationTableViewController.swift in Sources */,
+				8C5E89CE227E911200514434 /* LocationViewController.swift in Sources */,
 				8C75103F22775E7200D6282C /* CauseDescViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
