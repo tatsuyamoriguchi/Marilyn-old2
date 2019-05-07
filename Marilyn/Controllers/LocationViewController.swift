@@ -20,7 +20,8 @@ class LocationViewController: UIViewController {
     var causeDesc: Cause!
     var causeTypeSelected: CauseType!
     
-    var address: String!
+    
+    //var address: String?
     
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
 
@@ -49,11 +50,35 @@ class LocationViewController: UIViewController {
             let longitude = currentLocation.coordinate.longitude
             let timeStamp = currentLocation.timestamp
             let descriptionString = currentLocation.description
+            //self.convertToAddress(latitude: latitude, longitude: longitude)
+            //let address = self.addressString
             
             
             //let clLocaiton = CLLocation(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
-            self.address = self.convertToAddress(latitude: latitude, longitude: longitude)
-            self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: timeStamp, address: self.address)
+            let geoCoder = CLGeocoder()
+            let location = CLLocation(latitude: latitude, longitude: longitude)
+            
+            geoCoder.reverseGeocodeLocation(location, preferredLocale: nil) { (clPlacemark: [CLPlacemark]?, error: Error?) in
+                
+                guard let place = clPlacemark?.first else {
+                    print("No placemark from Apple: \(String(describing: error))")
+                    return
+                }
+                
+                let postalAddressFormatter = CNPostalAddressFormatter()
+                postalAddressFormatter.style = .mailingAddress
+                var addressString: String?
+                if let postalAddress = place.postalAddress {
+                    addressString = postalAddressFormatter.string(from: postalAddress)
+                    addressString = addressString?.replacingOccurrences(of: "\n", with: ", ")
+                    self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: timeStamp, address: addressString ?? "ERROR: addressString is nil.")
+                    print(addressString)
+
+                }
+            }
+
+            
+//            self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: timeStamp, address: self.address ?? "shit")
             
         }
         
@@ -66,7 +91,7 @@ class LocationViewController: UIViewController {
         
     }
 
-    func convertToAddress(latitude: Double, longitude: Double) -> String {
+ /*   func convertToAddress(latitude: Double, longitude: Double) {
         // Get the location description
         
         let geoCoder = CLGeocoder()
@@ -81,15 +106,17 @@ class LocationViewController: UIViewController {
             
             let postalAddressFormatter = CNPostalAddressFormatter()
             postalAddressFormatter.style = .mailingAddress
-            
+            var addressString: String?
             if let postalAddress = place.postalAddress {
-                self.address = postalAddressFormatter.string(from: postalAddress)
-                print("ERROORRORORORO: \(self.address)")
+                addressString = postalAddressFormatter.string(from: postalAddress)
+                print("Hello addressString: \(addressString)")
+                self.address = addressString
                 
             }
         }
-        return self.address ?? "Super Error"
+       
     }
+   */
     
     // Add a new locaiton with a location name to Location entity
     func add(locationName: String, descriptionString: String, latitude: Double, longitude: Double, timeStamp: Date, address: String ) {
