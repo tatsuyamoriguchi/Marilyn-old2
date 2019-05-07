@@ -11,6 +11,7 @@ import CoreData
 import MapKit
 import CoreLocation
 import UserNotifications
+import Contacts
 
 
 class LocationViewController: UIViewController {
@@ -19,6 +20,8 @@ class LocationViewController: UIViewController {
     var causeDesc: Cause!
     var causeTypeSelected: CauseType!
     
+    var address: String!
+    
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
 
     @IBOutlet weak var mapView: MKMapView!
@@ -26,14 +29,31 @@ class LocationViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func addOnPressed(_ sender: UIBarButtonItem) {
+        
+        // To save current location data
+        guard let currentLocation = mapView.userLocation.location else {
+            return
+        }
+        
+        
+        
         let alert = UIAlertController(title: "Add Location", message: "Add a new location.", preferredStyle: .alert)
         
         let add = UIAlertAction(title: "Add", style: .default) { (alertAction: UIAlertAction) in
-            guard let newName = alert.textFields?[0].text else {
+            guard let locationName = alert.textFields?[0].text else {
                 print("alert.textFields?[0].text got nil.")
                 return
             }
-            self.add(locationName: newName)
+            
+            let latitude = currentLocation.coordinate.latitude
+            let longitude = currentLocation.coordinate.longitude
+            let timeStamp = currentLocation.timestamp
+            let descriptionString = currentLocation.description
+            
+            
+            //let clLocaiton = CLLocation(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+            self.address = self.convertToAddress(latitude: latitude, longitude: longitude)
+            self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: timeStamp, address: self.address)
             
         }
         
@@ -45,9 +65,34 @@ class LocationViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         
     }
+
+    func convertToAddress(latitude: Double, longitude: Double) -> String {
+        // Get the location description
+        
+        let geoCoder = CLGeocoder()
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        
+        geoCoder.reverseGeocodeLocation(location, preferredLocale: nil) { (clPlacemark: [CLPlacemark]?, error: Error?) in
+            
+            guard let place = clPlacemark?.first else {
+                print("No placemark from Apple: \(String(describing: error))")
+                return
+            }
+            
+            let postalAddressFormatter = CNPostalAddressFormatter()
+            postalAddressFormatter.style = .mailingAddress
+            
+            if let postalAddress = place.postalAddress {
+                self.address = postalAddressFormatter.string(from: postalAddress)
+                print("ERROORRORORORO: \(self.address)")
+                
+            }
+        }
+        return self.address ?? "Super Error"
+    }
     
     // Add a new locaiton with a location name to Location entity
-    func add(locationName: String) {
+    func add(locationName: String, descriptionString: String, latitude: Double, longitude: Double, timeStamp: Date, address: String ) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -56,10 +101,11 @@ class LocationViewController: UIViewController {
         let item = NSManagedObject(entity: entity, insertInto: managedContext)
         
         item.setValue(locationName, forKey: "locationName")
-        print(locationName)
-        // store Core Location data
-        
-        
+        item.setValue(descriptionString, forKey: "descriptionString")
+        item.setValue(latitude, forKey: "latitude")
+        item.setValue(longitude, forKey: "longitude")
+        item.setValue(timeStamp, forKey: "timeStamp")
+        item.setValue(address, forKey: "address")
         do {
             try managedContext.save()
             
@@ -92,7 +138,7 @@ class LocationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         configureFetchedResultsController()
         
@@ -112,7 +158,7 @@ class LocationViewController: UIViewController {
         // Create the fetch request, set some sort descriptor, then feed the fetchedResultsController
         // the request with along with the managed object context, which we'll use the view context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
-        let sortDescriptorType = NSSortDescriptor(key: "locationName", ascending: true)
+        let sortDescriptorType = NSSortDescriptor(key: "timeStamp", ascending: false)
         
         fetchRequest.sortDescriptors = [sortDescriptorType]
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
@@ -158,6 +204,8 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         
         if let loca = fetchedResultsController?.object(at: indexPath) as? Location {
             LocationCell.textLabel?.text = loca.locationName
+            LocationCell.detailTextLabel?.text = loca.address
+            
         }
         return LocationCell
     }
