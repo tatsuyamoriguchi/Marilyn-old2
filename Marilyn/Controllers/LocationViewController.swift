@@ -9,11 +9,12 @@
 import UIKit
 import CoreData
 import MapKit
+import CoreLocation
+import UserNotifications
 
 
 class LocationViewController: UIViewController {
     
-  
     var stateOfMindDesc: StateOfMindDesc!
     var causeDesc: Cause!
     var causeTypeSelected: CauseType!
@@ -25,7 +26,7 @@ class LocationViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     @IBAction func addOnPressed(_ sender: UIBarButtonItem) {
-        let alert = UIAlertController(title: "Add Locaiton", message: "Add a new location.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add Location", message: "Add a new location.", preferredStyle: .alert)
         
         let add = UIAlertAction(title: "Add", style: .default) { (alertAction: UIAlertAction) in
             guard let newName = alert.textFields?[0].text else {
@@ -55,6 +56,7 @@ class LocationViewController: UIViewController {
         let item = NSManagedObject(entity: entity, insertInto: managedContext)
         
         item.setValue(locationName, forKey: "locationName")
+        print(locationName)
         // store Core Location data
         
         
@@ -90,6 +92,8 @@ class LocationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mapView.userTrackingMode = .follow
         configureFetchedResultsController()
         
         // Testing

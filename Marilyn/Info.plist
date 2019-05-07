@@ -51,5 +51,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Allow this app to always track your location data to notify you of past location experiences whenver you are nearby. Then this app can give you advices before entering the spot. The logged location data remains on your device and not shared with others.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow this app to track your location data when in use. The location data remains on your device and not shared.</string>
 </dict>
 </plist>

@@ -8,17 +8,30 @@
 
 import UIKit
 import CoreData
+import CoreLocation
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    var window: UIWindow?
+    static let geoCoder = CLGeocoder()
     
+    var window: UIWindow?
+    let center = UNUserNotificationCenter.current()
+    let locationManager = CLLocationManager()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
-        
+
         preloadData()
+        
+        center.requestAuthorization(options: [.alert, .sound]) { granted, error in
+        }
+        
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startMonitoringVisits()
+        locationManager.delegate = self
+        
+
         return true
     }
     
@@ -98,50 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
                 
                 
-                /*
-                 backgroundContext.perform {
-                 if let arrayContents = NSArray(contentsOf: urlPath) as? [String] {
-                 
-                 do {
-                 
-                 for item in arrayContents {
-                 //print(item)
-                 
-                 switch file {
-                 case "CauseType":
-                 let dataObject = CauseType(context: backgroundContext)
-                 dataObject.type = item
-                 
-                 case "Location":
-                 let dataObject = Location(context: backgroundContext)
-                 dataObject.location = item
-                 
-                 /* case "StateOfMindDesc":
-                 let dataObject = StateOfMindDesc(context: backgroundContext)
-                 dataObject.adjective = item
-                 //dataObject.rate = item
-                 */
-                 default:
-                 break
-                 }
-                 
-                 }
-                 
-                 try backgroundContext.save()
-                 
-                 userDefaults.setValue(true, forKey: preloadedDataKey)
-                 
-                 } catch {
-                 print(error.localizedDescription)
-                 }
-                 }
-                 }
-                 
-                 
-                 }
-                 }
-                 }
-                 */
+
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -214,3 +184,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 }
 
+
+extension AppDelegate: CLLocationManagerDelegate {
+
+    func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
+        // create CLLOcation from the coordinates of CLVisit
+        let clLocaiton = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        // Get the location description
+        
+        AppDelegate.geoCoder.reverseGeocodeLocation(clLocaiton) { placemarks, _ in
+            if let place = placemarks?.first {
+                // placemarks, description from CPLacemark devodec by CLGeocoder,
+                // contain country, state, city, and street address
+                // Also inlcude points of interest and geographically related data
+                // Use CLPlacemark to create its object
+                let description = "\(place)"
+                self.newVisitReceived(visit, description: description)
+            }
+        }
+    }
+        
+    func newVisitReceived(_ visit: CLVisit, description: String) {
+        let location = LocationData(visit: visit, descriptionString: description)
+        // CLVisit has four properties: arrivalDate, departureDate, coordinate, horizontlAccuracy
+        
+        // Create notification content
+        let content = UNMutableNotificationContent()
+        content.title = "New Visit Entry"
+        content.body = location.description
+        content.sound = .default
+        // Create a one second long trigger and notification request with that trigger.
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: location.dateString, content: content, trigger: trigger)
+        // Schedule the notificaiton by adding the request to notificaiton center.
+        center.add(request, withCompletionHandler: nil)
+        
+        
+        // Save locaiton to disk
+        
+    }
+    
+}

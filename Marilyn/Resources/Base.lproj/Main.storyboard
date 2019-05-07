@@ -291,7 +291,7 @@
             </objects>
             <point key="canvasLocation" x="3357.5999999999999" y="-197.45127436281859"/>
         </scene>
-        <!--Select Type of Current Location-->
+        <!--Select or Add Location-->
         <scene sceneID="kfl-Yt-Bo4">
             <objects>
                 <viewController id="aEp-qf-n6c" customClass="LocationViewController" customModule="Marilyn" customModuleProvider="target" sceneMemberID="viewController">
@@ -329,7 +329,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Buz-Gr-xxF"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Select Type of Current Location" largeTitleDisplayMode="never" id="5s0-U8-dHs">
+                    <navigationItem key="navigationItem" title="Select or Add Location" largeTitleDisplayMode="never" id="5s0-U8-dHs">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Eig-ak-8FZ">
                             <connections>
                                 <action selector="addOnPressed:" destination="aEp-qf-n6c" id="vA0-S7-f3v"/>
