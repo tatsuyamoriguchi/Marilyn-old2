@@ -19,6 +19,7 @@ class LocationViewController: UIViewController {
     var stateOfMindDesc: StateOfMindDesc!
     var causeDesc: Cause!
     var causeTypeSelected: CauseType!
+    var timeStamp: Date!
     
     
     //var address: String?
@@ -48,13 +49,8 @@ class LocationViewController: UIViewController {
             
             let latitude = currentLocation.coordinate.latitude
             let longitude = currentLocation.coordinate.longitude
-            let timeStamp = currentLocation.timestamp
+            self.timeStamp = currentLocation.timestamp
             let descriptionString = currentLocation.description
-            //self.convertToAddress(latitude: latitude, longitude: longitude)
-            //let address = self.addressString
-            
-            
-            //let clLocaiton = CLLocation(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
             let geoCoder = CLGeocoder()
             let location = CLLocation(latitude: latitude, longitude: longitude)
             
@@ -71,15 +67,11 @@ class LocationViewController: UIViewController {
                 if let postalAddress = place.postalAddress {
                     addressString = postalAddressFormatter.string(from: postalAddress)
                     addressString = addressString?.replacingOccurrences(of: "\n", with: ", ")
-                    self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: timeStamp, address: addressString ?? "ERROR: addressString is nil.")
+                    self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: self.timeStamp, address: addressString ?? "ERROR: addressString is nil.")
                     print(addressString)
 
                 }
             }
-
-            
-//            self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: timeStamp, address: self.address ?? "shit")
-            
         }
         
         let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -91,33 +83,6 @@ class LocationViewController: UIViewController {
         
     }
 
- /*   func convertToAddress(latitude: Double, longitude: Double) {
-        // Get the location description
-        
-        let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: latitude, longitude: longitude)
-        
-        geoCoder.reverseGeocodeLocation(location, preferredLocale: nil) { (clPlacemark: [CLPlacemark]?, error: Error?) in
-            
-            guard let place = clPlacemark?.first else {
-                print("No placemark from Apple: \(String(describing: error))")
-                return
-            }
-            
-            let postalAddressFormatter = CNPostalAddressFormatter()
-            postalAddressFormatter.style = .mailingAddress
-            var addressString: String?
-            if let postalAddress = place.postalAddress {
-                addressString = postalAddressFormatter.string(from: postalAddress)
-                print("Hello addressString: \(addressString)")
-                self.address = addressString
-                
-            }
-        }
-       
-    }
-   */
-    
     // Add a new locaiton with a location name to Location entity
     func add(locationName: String, descriptionString: String, latitude: Double, longitude: Double, timeStamp: Date, address: String ) {
         
@@ -146,7 +111,30 @@ class LocationViewController: UIViewController {
     }
     
     
-    func save(locationName: String) {
+    func saveSOM(location: Location) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let entity = NSEntityDescription.entity(forEntityName: "StateOfMind", in: managedContext)!
+        let item = NSManagedObject(entity: entity, insertInto: managedContext)
+        //let locationName = "TEST"
+       
+        item.setValue(location, forKey: "location")
+        item.setValue(timeStamp, forKey: "timeStamp")
+        item.setValue(causeDesc, forKey: "cause")
+        item.setValue(causeTypeSelected, forKey: "causeType")
+        item.setValue(stateOfMindDesc, forKey: "stateOfMindDesc")
+        
+        do {
+            try managedContext.save()
+            
+        } catch {
+            print("Failed to save an item: \(error.localizedDescription)")
+        }
+        
+    }
+    
+  /*  func save(locationName: String) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
         
@@ -162,7 +150,7 @@ class LocationViewController: UIViewController {
             print("Failed to save an item: \(error.localizedDescription)")
         }
     }
-    
+*/
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.showsUserLocation = true
@@ -238,13 +226,11 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+ 
+        let location = self.fetchedResultsController?.object(at: indexPath) as? Location
+        saveSOM(location: location!)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        //saveSOM()
-        
-        
-        
-        
         // Back to TabBarController
         if let tabBarController = appDelegate.window!.rootViewController as? UITabBarController {
             tabBarController.selectedIndex = 0
