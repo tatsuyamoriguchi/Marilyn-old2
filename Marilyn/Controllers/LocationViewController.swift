@@ -187,6 +187,8 @@ class LocationViewController: UIViewController {
         for pin in pins {
             let pointAnnotation = MKPointAnnotation()
             pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+            pointAnnotation.title = pin.locationName
+            pointAnnotation.subtitle = pin.address
             self.mapView.addAnnotation(pointAnnotation)
         }
         
@@ -255,6 +257,7 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
  
+        timeStamp = Date()
         let location = self.fetchedResultsController?.object(at: indexPath) as? Location
         saveSOM(location: location!)
         
