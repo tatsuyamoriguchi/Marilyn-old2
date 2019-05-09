@@ -1,5 +1,5 @@
 //
-//  StateOfMindTableViewController.swift
+//  StateOfMindDescTableViewController.swift
 //  Marilyn
 //
 //  Created by Tatsuya Moriguchi on 4/27/19.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate, UISearchResultsUpdating, UISearchBarDelegate {
+class StateOfMindDescTableViewController: UITableViewController, UITextFieldDelegate, UISearchResultsUpdating, UISearchBarDelegate {
  
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
@@ -384,7 +384,7 @@ class StateOfMindTableViewController: UITableViewController, UITextFieldDelegate
     }
 }
 
-extension StateOfMindTableViewController: NSFetchedResultsControllerDelegate {
+extension StateOfMindDescTableViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         print("The Controller Content Has Changed.")
         tableView.reloadData()

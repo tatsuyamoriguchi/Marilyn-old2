@@ -21,7 +21,7 @@
 		8CB178242268E4BA00EF193D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB178222268E4BA00EF193D /* Main.storyboard */; };
 		8CB178262268E4BD00EF193D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CB178252268E4BD00EF193D /* Assets.xcassets */; };
 		8CB178292268E4BD00EF193D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CB178272268E4BD00EF193D /* LaunchScreen.storyboard */; };
-		8CCB162722752A47008580D0 /* StateOfMindTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB162622752A47008580D0 /* StateOfMindTableViewController.swift */; };
+		8CCB162722752A47008580D0 /* StateOfMindDescTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB162622752A47008580D0 /* StateOfMindDescTableViewController.swift */; };
 		8CCB162922752A72008580D0 /* CauseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB162822752A72008580D0 /* CauseTableViewController.swift */; };
 		8CE8171D227418D800F776C1 /* StateOfMindDesc.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CE8171C227418D800F776C1 /* StateOfMindDesc.plist */; };
 /* End PBXBuildFile section */
@@ -43,7 +43,7 @@
 		8CB178252268E4BD00EF193D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8CB178282268E4BD00EF193D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8CB1782A2268E4BD00EF193D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8CCB162622752A47008580D0 /* StateOfMindTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateOfMindTableViewController.swift; sourceTree = "<group>"; };
+		8CCB162622752A47008580D0 /* StateOfMindDescTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateOfMindDescTableViewController.swift; sourceTree = "<group>"; };
 		8CCB162822752A72008580D0 /* CauseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CauseTableViewController.swift; sourceTree = "<group>"; };
 		8CE8171C227418D800F776C1 /* StateOfMindDesc.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = StateOfMindDesc.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,7 +64,7 @@
 			children = (
 				8C49E5C32273C611008557FB /* RootUITabBarController.swift */,
 				8CB178202268E4BA00EF193D /* DashboardViewController.swift */,
-				8CCB162622752A47008580D0 /* StateOfMindTableViewController.swift */,
+				8CCB162622752A47008580D0 /* StateOfMindDescTableViewController.swift */,
 				8C75103E22775E7200D6282C /* CauseDescViewController.swift */,
 				8CCB162822752A72008580D0 /* CauseTableViewController.swift */,
 				8C5E89CD227E911200514434 /* LocationViewController.swift */,
@@ -235,7 +235,7 @@
 				8CB178212268E4BA00EF193D /* DashboardViewController.swift in Sources */,
 				8CB1781D2268E4BA00EF193D /* AppDelegate.swift in Sources */,
 				8C49E5C42273C611008557FB /* RootUITabBarController.swift in Sources */,
-				8CCB162722752A47008580D0 /* StateOfMindTableViewController.swift in Sources */,
+				8CCB162722752A47008580D0 /* StateOfMindDescTableViewController.swift in Sources */,
 				8C5E89CE227E911200514434 /* LocationViewController.swift in Sources */,
 				8C75103F22775E7200D6282C /* CauseDescViewController.swift in Sources */,
 			);
