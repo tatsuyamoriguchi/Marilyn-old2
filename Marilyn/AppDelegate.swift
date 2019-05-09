@@ -189,10 +189,10 @@ extension AppDelegate: CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didVisit visit: CLVisit) {
         // create CLLOcation from the coordinates of CLVisit
-        let clLocaiton = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        let clLocation = CLLocation(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
         // Get the location description
         
-        AppDelegate.geoCoder.reverseGeocodeLocation(clLocaiton) { placemarks, _ in
+        AppDelegate.geoCoder.reverseGeocodeLocation(clLocation) { placemarks, _ in
             if let place = placemarks?.first {
                 // placemarks, description from CPLacemark devodec by CLGeocoder,
                 // contain country, state, city, and street address
@@ -220,7 +220,7 @@ extension AppDelegate: CLLocationManagerDelegate {
         center.add(request, withCompletionHandler: nil)
         
         
-        // Save locaiton to disk
+        // Save location to disk
         
     }
     

@@ -77,7 +77,7 @@ class LocationViewController: UIViewController {
         
     }
 
-    // Add a new locaiton with a location name to Location entity
+    // Add a new location with a location name to Location entity
     func add(locationName: String, descriptionString: String, latitude: Double, longitude: Double, timeStamp: Date, address: String ) {
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -118,7 +118,7 @@ class LocationViewController: UIViewController {
         item.setValue(causeDesc, forKey: "cause")
         item.setValue(causeTypeSelected, forKey: "causeType")
         item.setValue(stateOfMindDesc, forKey: "stateOfMindDesc")
-        
+
         do {
             try managedContext.save()
             
@@ -126,26 +126,7 @@ class LocationViewController: UIViewController {
             print("Failed to save an item: \(error.localizedDescription)")
         }
     }
-/*
-    final class SOMAnnotation: NSObject, MKAnnotation {
-        var coordinate: CLLocationCoordinate2D
-        var title: String?
-        var subtitle: String?
-        
-        init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?) {
-            self.coordinate = coordinate
-            self.title = title
-            self.subtitle = subtitle
-            
-            super.init()
-        }
-        
-        var region: MKCoordinateRegion {
-            let span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
-            return MKCoordinateRegion(center: coordinate, span: span)
-        }
-    }
-  */
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,27 +137,6 @@ class LocationViewController: UIViewController {
 
         fetchAnnotations()
         
-        /*
-        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-        
-        guard let currentLocation = mapView.userLocation.location else {
-            return
-        }
-        let currentCoordinate = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
-        let currentAnnotation = SOMAnnotation(coordinate: currentCoordinate, title: "You are here!", subtitle: "Reunion, Irvine, California")
-        mapView.setRegion(currentAnnotation.region, animated: true)
-        */
-        
-        // Testing
-        print("This is LocationTableVC")
-        print("stateOfMindDesc: \(String(describing: stateOfMindDesc))")
-        print("causeDesc: \(String(describing: causeDesc))")
-        print("causeTypeSelected: \(String(describing: causeTypeSelected))")
-
-      /* // Generate pins from nearby locaitons that you've already created and add them to the map
-        let annotations = LocationsStorage.shared.locations.map { annotationForLocation($0) }
-        mapView.addAnnotation(annotations)
-*/
     }
     
     func fetchAnnotations() {
@@ -259,6 +219,13 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
  
         timeStamp = Date()
         let location = self.fetchedResultsController?.object(at: indexPath) as? Location
+        
+        //let entityLocation = NSEntityDescription.entity(forEntityName: "Location", in: managedContext)!
+        //let itemSelected = NSManagedObject(entity: entityLocation, insertInto: managedContext)
+        
+        location?.setValue(timeStamp, forKey: "timeStamp")
+        
+        
         saveSOM(location: location!)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -271,28 +238,119 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         self.navigationController?.popToRootViewController(animated: false)
     }
     
-   /*
-    func annotationForLocation(_ location: LocationData) -> MKAnnotation {
-        let annotation = MKPointAnnotation()
-        annotation.title = location.dateString
-        annotation.coordinate = location.coordinates
-        return annotation
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        	return true
     }
- */
-}
-/*
-extension LocationViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if let SOMAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier) as? MKMarkerAnnotationView {
-            SOMAnnotationView.animatesWhenAdded = true
-            SOMAnnotationView.titleVisibility = .adaptive
-            SOMAnnotationView.subtitleVisibility = .adaptive
-            
-            return SOMAnnotationView
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate?.persistentContainer.viewContext
+        let wordToSwipe = self.fetchedResultsController?.object(at: indexPath)
+        
+        let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
+            print("Editing")
+            if let location = self.fetchedResultsController?.object(at: indexPath) as? Location {
+                
+                self.locationAlert(Location: location)
+            }
         }
         
-        return nil
+        let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
+            print("Deleting")
+            managedContext?.delete(wordToSwipe as! NSManagedObject)
+        }
+        
+        do {
+            try managedContext?.save()
+        } catch {
+            print("Saving Error: \(error)")
+        }
+        
+        edit.backgroundColor = UIColor.blue
+        return [edit, delete]
+    }
+    
+    func locationAlert(Location: Location) {
+        let alertController = UIAlertController(title: "Edit", message: "Edit and Update the Location Name.", preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
+            
+            let nameToUpdate = alertController.textFields![0].text
+            
+            self.update(Location: Location, NameToUpdate: nameToUpdate!)
+        })
+        
+        alertController.addTextField { (textField: UITextField) in
+            textField.placeholder = "Type Location Name to Update"
+            saveAction.isEnabled = false
+            textField.text = Location.locationName
+            
+        }
+        
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: alertController.textFields![0], queue: OperationQueue.main) { (notification) in
+            if (alertController.textFields![0].text?.count)! > 0 {
+                saveAction.isEnabled = true
+            }
+        }
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    
+    func update(Location: Location, NameToUpdate: String) {
+        Location.setValue(NameToUpdate, forKey: "locationName")
+    }
+    
+    
+}
+extension LocationViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("The Controller Content Has Changed.")
+        tableView.reloadData()
     }
 }
- */
 
+extension LocationViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        print("An annotation was tapped!")
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        // Create the fetch request, set some sort descriptor, then feed the fetchedResultsController
+        // the request with along with the managed object context, which we'll use the view context
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
+        
+        let selectedAnnotation = view.annotation as? MKPointAnnotation
+        
+        let selectedLocationName = selectedAnnotation?.title
+        fetchRequest.predicate = NSPredicate(format: "locationName == %@", selectedLocationName!)
+        
+        print("selectedAnnotation.title: \(String(describing: selectedAnnotation?.title))")
+        
+        let sortDescriptorType = NSSortDescriptor(key: "timeStamp", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptorType]
+        
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController?.delegate = self as? NSFetchedResultsControllerDelegate
+        do {
+            try fetchedResultsController?.performFetch()
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
+        configureFetchedResultsController()
+        tableView.reloadData()
+    }
+}

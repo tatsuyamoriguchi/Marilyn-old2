@@ -115,6 +115,7 @@
 			children = (
 				8CB1781B2268E4BA00EF193D /* Marilyn */,
 				8CB1781A2268E4BA00EF193D /* Products */,
+				8CB6553E22840EF600A18CFB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,6 +139,13 @@
 				8CB1781C2268E4BA00EF193D /* AppDelegate.swift */,
 			);
 			path = Marilyn;
+			sourceTree = "<group>";
+		};
+		8CB6553E22840EF600A18CFB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +180,11 @@
 				TargetAttributes = {
 					8CB178182268E4BA00EF193D = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

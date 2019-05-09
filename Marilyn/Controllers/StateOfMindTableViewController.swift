@@ -391,3 +391,4 @@ extension StateOfMindTableViewController: NSFetchedResultsControllerDelegate {
     }
     
 }
+
