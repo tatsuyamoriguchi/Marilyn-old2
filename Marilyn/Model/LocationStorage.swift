@@ -11,8 +11,10 @@ import Foundation
 import CoreLocation
 
 class LocationsStorage {
-    static let shared = LocationsStorage()
-    
+    //static let shared = LocationsStorage()
+    //private(set) var locations: [Location]
+
+
     func saveCLLocationToDisk(_ clLocation: CLLocation) {
         
         let currentDate = Date()

@@ -16,28 +16,22 @@ import Contacts
 
 class LocationViewController: UIViewController {
     
+    
     var stateOfMindDesc: StateOfMindDesc!
     var causeDesc: Cause!
     var causeTypeSelected: CauseType!
     var timeStamp: Date!
     
     
-    //var address: String?
-    
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
-
     @IBOutlet weak var mapView: MKMapView!
-
     @IBOutlet weak var tableView: UITableView!
-    
     @IBAction func addOnPressed(_ sender: UIBarButtonItem) {
         
         // To save current location data
         guard let currentLocation = mapView.userLocation.location else {
             return
         }
-        
-        
         
         let alert = UIAlertController(title: "Add Location", message: "Add a new location.", preferredStyle: .alert)
         
@@ -68,7 +62,7 @@ class LocationViewController: UIViewController {
                     addressString = postalAddressFormatter.string(from: postalAddress)
                     addressString = addressString?.replacingOccurrences(of: "\n", with: ", ")
                     self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: self.timeStamp, address: addressString ?? "ERROR: addressString is nil.")
-                    print(addressString)
+                    //print(addressString)
 
                 }
             }
@@ -131,31 +125,47 @@ class LocationViewController: UIViewController {
         } catch {
             print("Failed to save an item: \(error.localizedDescription)")
         }
-        
     }
-    
-  /*  func save(locationName: String) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-        let managedContext = appDelegate.persistentContainer.viewContext
+/*
+    final class SOMAnnotation: NSObject, MKAnnotation {
+        var coordinate: CLLocationCoordinate2D
+        var title: String?
+        var subtitle: String?
         
-        let entity = NSEntityDescription.entity(forEntityName: "stateOfMind", in: managedContext)!
-        let item = NSManagedObject(entity: entity, insertInto: managedContext)
-        
-        item.setValue(locationName, forKey: "stateOfMind.location")
-        
-        do {
-            try managedContext.save()
+        init(coordinate: CLLocationCoordinate2D, title: String?, subtitle: String?) {
+            self.coordinate = coordinate
+            self.title = title
+            self.subtitle = subtitle
             
-        } catch {
-            print("Failed to save an item: \(error.localizedDescription)")
+            super.init()
+        }
+        
+        var region: MKCoordinateRegion {
+            let span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+            return MKCoordinateRegion(center: coordinate, span: span)
         }
     }
-*/
+  */
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureFetchedResultsController()
+        
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
-        configureFetchedResultsController()
+
+        fetchAnnotations()
+        
+        /*
+        mapView.register(MKMarkerAnnotationView.self, forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+        
+        guard let currentLocation = mapView.userLocation.location else {
+            return
+        }
+        let currentCoordinate = CLLocationCoordinate2D(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+        let currentAnnotation = SOMAnnotation(coordinate: currentCoordinate, title: "You are here!", subtitle: "Reunion, Irvine, California")
+        mapView.setRegion(currentAnnotation.region, animated: true)
+        */
         
         // Testing
         print("This is LocationTableVC")
@@ -163,8 +173,25 @@ class LocationViewController: UIViewController {
         print("causeDesc: \(String(describing: causeDesc))")
         print("causeTypeSelected: \(String(describing: causeTypeSelected))")
 
-        // Do any additional setup after loading the view.
+      /* // Generate pins from nearby locaitons that you've already created and add them to the map
+        let annotations = LocationsStorage.shared.locations.map { annotationForLocation($0) }
+        mapView.addAnnotation(annotations)
+*/
     }
+    
+    func fetchAnnotations() {
+        
+        guard let pins = fetchedResultsController?.fetchedObjects as? [Location] else { return }
+        
+        // Place past pins onto the map
+        for pin in pins {
+            let pointAnnotation = MKPointAnnotation()
+            pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+            self.mapView.addAnnotation(pointAnnotation)
+        }
+        
+    }
+    
     
     func configureFetchedResultsController() {
 
@@ -183,6 +210,7 @@ class LocationViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
+        
     }
     
     /*
@@ -239,4 +267,29 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         // This line should be placed at the bottom this funciton
         self.navigationController?.popToRootViewController(animated: false)
     }
+    
+   /*
+    func annotationForLocation(_ location: LocationData) -> MKAnnotation {
+        let annotation = MKPointAnnotation()
+        annotation.title = location.dateString
+        annotation.coordinate = location.coordinates
+        return annotation
+    }
+ */
 }
+/*
+extension LocationViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let SOMAnnotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier) as? MKMarkerAnnotationView {
+            SOMAnnotationView.animatesWhenAdded = true
+            SOMAnnotationView.titleVisibility = .adaptive
+            SOMAnnotationView.subtitleVisibility = .adaptive
+            
+            return SOMAnnotationView
+        }
+        
+        return nil
+    }
+}
+ */
+
