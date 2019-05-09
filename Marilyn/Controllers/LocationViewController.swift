@@ -327,12 +327,13 @@ extension LocationViewController: MKMapViewDelegate {
         // the request with along with the managed object context, which we'll use the view context
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
         
-        let selectedAnnotation = view.annotation as? MKPointAnnotation
+        if let selectedAnnotation = view.annotation as? MKPointAnnotation {
         
-        let selectedLocationName = selectedAnnotation?.title
+         let selectedLocationName = selectedAnnotation.title
         fetchRequest.predicate = NSPredicate(format: "locationName == %@", selectedLocationName!)
         
-        print("selectedAnnotation.title: \(String(describing: selectedAnnotation?.title))")
+        print("selectedAnnotation.title: \(String(describing: selectedAnnotation.title))")
+        }
         
         let sortDescriptorType = NSSortDescriptor(key: "timeStamp", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptorType]
