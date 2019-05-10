@@ -131,17 +131,6 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
             
         }
         
-        
-      /*  NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: alertController.textFields![0], queue: OperationQueue.main) { (notification) in
-            
-            if (alertController.textFields![0].text?.count)! > 0 {
-                saveAction.isEnabled = true
-            } else {
-                saveAction.isEnabled = false
-            }
-        }
-       */
-        
         NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: alertController.textFields![1], queue: OperationQueue.main) { (notification) in
             if (alertController.textFields![0].text?.count)! > 0, let value = Int16(alertController.textFields![1].text!) {
                 switch value {

@@ -210,7 +210,7 @@ extension AppDelegate: CLLocationManagerDelegate {
         
         // Create notification content
         let content = UNMutableNotificationContent()
-        content.title = "New Visit Entry"
+        content.title = "How do you feel so far here? Time to log current state of your mind"
         content.body = location.description
         content.sound = .default
         // Create a one second long trigger and notification request with that trigger.
@@ -218,9 +218,6 @@ extension AppDelegate: CLLocationManagerDelegate {
         let request = UNNotificationRequest(identifier: location.dateString, content: content, trigger: trigger)
         // Schedule the notificaiton by adding the request to notificaiton center.
         center.add(request, withCompletionHandler: nil)
-        
-        
-        // Save location to disk
         
     }
     
