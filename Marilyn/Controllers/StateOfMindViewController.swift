@@ -21,6 +21,8 @@ class StateOfMindViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     
+    
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -34,19 +36,27 @@ class StateOfMindViewController: UIViewController {
         
     }
     
+    // To display a red pin right after entering a new SOM location data
+    override func viewWillAppear(_ animated: Bool) {
+        viewDidLoad()
+    }
+    
     func fetchAnnotations() {
         
-        guard let pins = fetchedResultsController?.fetchedObjects as? [StateOfMind] else { return }
+        guard var pins = fetchedResultsController?.fetchedObjects as? [StateOfMind] else { return }
         
         // Place past pins onto the map
         for pin in pins {
             let pointAnnotation = MKPointAnnotation()
             pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: (pin.location?.latitude)!, longitude: pin.location!.longitude)
             pointAnnotation.title = pin.location!.locationName
+            
+            
             pointAnnotation.subtitle = pin.stateOfMindDesc!.adjective
             self.mapView.addAnnotation(pointAnnotation)
-        
-            }
+            
+            
+        }
     }
     
     func configureFetchedResultsController() {
@@ -106,6 +116,44 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
         }
         return Cell
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+        
+        
+        let stateOM = fetchedResultsController?.object(at: indexPath) as? StateOfMind
+        //guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "StateOfMind")
+        fetchRequest.predicate = NSPredicate(format: "location.locationName == %@", (stateOM?.location?.locationName)!)
+        let pointAnnotation = MKPointAnnotation()
+        pointAnnotation.title = stateOM?.location?.locationName
+        pointAnnotation.subtitle = stateOM?.stateOfMindDesc?.adjective
+        pointAnnotation.coordinate.latitude = (stateOM?.location?.latitude)!
+        pointAnnotation.coordinate.longitude = (stateOM?.location?.longitude)!
+    
+        self.mapView.addAnnotation(pointAnnotation)
+        mapView.selectAnnotation(pointAnnotation, animated: true)
+        print("++++++++++++")
+        print(pointAnnotation.title!)
+
+
+        /*
+        if let stateOM = fetchedResultsController?.object(at: indexPath) as? StateOfMind {
+        
+            let pointName = stateOM.location?.locationName
+            let searchResutls = mapView.annotations.filter { annotation in
+                return (annotation.title??.localizedCaseInsensitiveContains(pointName!) ?? false)
+            }
+            print("+++++++++++++")
+            print(searchResutls) // MKPointAnnotation???
+            
+            mapView.selectAnnotation(searchResutls as! MKAnnotation, animated: true)
+        }*/
+    }
+    
+    
+    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -192,6 +240,13 @@ extension StateOfMindViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         print("An annotation was tapped!")
+     
+        let pinToZoomOn = view.annotation
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let region = MKCoordinateRegion(center: pinToZoomOn!.coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+        
+        
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         // Create the fetch request, set some sort descriptor, then feed the fetchedResultsController
