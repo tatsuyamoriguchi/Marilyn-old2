@@ -42,21 +42,33 @@ class StateOfMindViewController: UIViewController {
     }
     
     func fetchAnnotations() {
-        
-        guard var pins = fetchedResultsController?.fetchedObjects as? [StateOfMind] else { return }
-        
+    
+/*        guard let pins = fetchedResultsController?.fetchedObjects as? [Location] else { return }
         // Place past pins onto the map
         for pin in pins {
             let pointAnnotation = MKPointAnnotation()
-            pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: (pin.location?.latitude)!, longitude: pin.location!.longitude)
-            pointAnnotation.title = pin.location!.locationName
+            pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
+            pointAnnotation.title = pin.locationName
+            pointAnnotation.subtitle = pin.lastAdjective
             
-            
-            pointAnnotation.subtitle = pin.stateOfMindDesc!.adjective
             self.mapView.addAnnotation(pointAnnotation)
-            
-            
         }
+
+  */
+        
+        guard let pins = fetchedResultsController?.fetchedObjects as? [StateOfMind] else { return }
+        // Place past pins onto the map
+        for pin in pins {
+            
+            let pointAnnotation = MKPointAnnotation()
+            pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: (pin.location?.latitude)!, longitude: (pin.location?.longitude)!)
+            pointAnnotation.title = pin.location?.locationName
+            pointAnnotation.subtitle = pin.location?.lastAdjective
+            
+            self.mapView.addAnnotation(pointAnnotation)
+        }
+        
+        
     }
     
     func configureFetchedResultsController() {
@@ -101,7 +113,7 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
             return 0
         }
         let rowCount = sections[section].numberOfObjects
-        print("The amount of rows in the section are: \(rowCount)")
+//        print("The amount of rows in the section are: \(rowCount)")
         
         return rowCount
     }
@@ -128,7 +140,8 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
         fetchRequest.predicate = NSPredicate(format: "location.locationName == %@", (stateOM?.location?.locationName)!)
         let pointAnnotation = MKPointAnnotation()
         pointAnnotation.title = stateOM?.location?.locationName
-        pointAnnotation.subtitle = stateOM?.stateOfMindDesc?.adjective
+        //pointAnnotation.subtitle = stateOM?.stateOfMindDesc?.adjective
+        pointAnnotation.subtitle = stateOM?.location?.lastAdjective
         pointAnnotation.coordinate.latitude = (stateOM?.location?.latitude)!
         pointAnnotation.coordinate.longitude = (stateOM?.location?.longitude)!
     
@@ -187,6 +200,22 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
         return [edit, delete]
     }
     
+   /* func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        guard let stateOM = fetchedResultsController?.object(at: indexPath) as? StateOfMind else { return nil }
+        
+
+        let details = detailsAction(at: indexPath)
+        
+        return UISwipeActionsConfiguration(actions: [details])
+    }
+  
+    func detailsAction(at indexPath: IndexPath) -> UIContextualAction {
+        let som = stateOfMind[indexPath.row]
+        let action = UIContextualAction(style: UIContextualAction.Style, title: <#T##String?#>, handler: <#T##UIContextualAction.Handler##UIContextualAction.Handler##(UIContextualAction, UIView, (Bool) -> Void) -> Void#>)
+        
+        return action
+    }
+    */
     
     func somAlert(StateOfMind: StateOfMind) {
         let alertController = UIAlertController(title: "Edit", message: "Edit and Update the State Of Mind data.", preferredStyle: .alert)

@@ -61,8 +61,9 @@ class LocationViewController: UIViewController {
                 if let postalAddress = place.postalAddress {
                     addressString = postalAddressFormatter.string(from: postalAddress)
                     addressString = addressString?.replacingOccurrences(of: "\n", with: ", ")
+                    
+                    // Create a new location data to Core Data
                     self.add(locationName: locationName, descriptionString: descriptionString, latitude: latitude, longitude: longitude, timeStamp: self.timeStamp, address: addressString ?? "ERROR: addressString is nil.")
-                    //print(addressString)
 
                 }
             }
@@ -224,7 +225,14 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         //let itemSelected = NSManagedObject(entity: entityLocation, insertInto: managedContext)
         
         location?.setValue(timeStamp, forKey: "timeStamp")
-        
+        print("++++ 1 ++++")
+        print(location?.lastAdjective)
+        print("++++ 2 ++++")
+        print(stateOfMindDesc.adjective!)
+       
+        location?.setValue(stateOfMindDesc.adjective, forKey: "lastAdjective")
+         print("++++ 3 ++++")
+        print(location?.lastAdjective)
         
         saveSOM(location: location!)
         
@@ -340,7 +348,7 @@ extension LocationViewController: MKMapViewDelegate {
         
         
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController?.delegate = self as? NSFetchedResultsControllerDelegate
+        fetchedResultsController?.delegate = self as NSFetchedResultsControllerDelegate
         do {
             try fetchedResultsController?.performFetch()
         } catch {
