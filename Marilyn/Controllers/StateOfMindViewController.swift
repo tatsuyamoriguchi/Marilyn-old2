@@ -20,6 +20,7 @@ class StateOfMindViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    var wordToSwipe: StateOfMind?
     
     
  
@@ -93,15 +94,18 @@ class StateOfMindViewController: UIViewController {
     
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        if segue.identifier == "toSOMDetailsSegue" {
+            let destVC = segue.destination as! SOMDetailsViewController
+            destVC.wordToSwipe = wordToSwipe
+            
+        }
+     }
+    
 
 }
 
@@ -175,19 +179,21 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate?.persistentContainer.viewContext
-        let wordToSwipe = self.fetchedResultsController?.object(at: indexPath)
+        wordToSwipe = fetchedResultsController?.object(at: indexPath) as? StateOfMind
         
         let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
-            print("Editing")
+           /* print("Editing")
             if let som = self.fetchedResultsController?.object(at: indexPath) as? StateOfMind {
                 
                 self.somAlert(StateOfMind: som)
             }
+              */
+            self.performSegue(withIdentifier: "toSOMDetailsSegue", sender: self.wordToSwipe)
         }
         
         let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
             print("Deleting")
-            managedContext?.delete(wordToSwipe as! NSManagedObject)
+            managedContext?.delete(self.wordToSwipe!)
         }
         
         do {
@@ -199,23 +205,6 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
         edit.backgroundColor = UIColor.blue
         return [edit, delete]
     }
-    
-   /* func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        guard let stateOM = fetchedResultsController?.object(at: indexPath) as? StateOfMind else { return nil }
-        
-
-        let details = detailsAction(at: indexPath)
-        
-        return UISwipeActionsConfiguration(actions: [details])
-    }
-  
-    func detailsAction(at indexPath: IndexPath) -> UIContextualAction {
-        let som = stateOfMind[indexPath.row]
-        let action = UIContextualAction(style: UIContextualAction.Style, title: <#T##String?#>, handler: <#T##UIContextualAction.Handler##UIContextualAction.Handler##(UIContextualAction, UIView, (Bool) -> Void) -> Void#>)
-        
-        return action
-    }
-    */
     
     func somAlert(StateOfMind: StateOfMind) {
         let alertController = UIAlertController(title: "Edit", message: "Edit and Update the State Of Mind data.", preferredStyle: .alert)

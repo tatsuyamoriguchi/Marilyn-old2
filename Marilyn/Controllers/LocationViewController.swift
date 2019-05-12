@@ -266,7 +266,13 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
             print("Deleting")
             managedContext?.delete(wordToSwipe as! NSManagedObject)
-        }
+            
+            // Code to Add:
+            // if stateOfMind with the same location data exists, replace lastAdjective with the most recent
+            // stateOfMind adjective
+            // else delete the locaiton data too.
+            
+            }
         
         do {
             try managedContext?.save()

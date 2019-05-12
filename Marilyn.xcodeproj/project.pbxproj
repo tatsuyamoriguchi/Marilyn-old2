@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8C09224C2280984C0028CB51 /* LocationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C09224B2280984C0028CB51 /* LocationData.swift */; };
+		8C407A222287C91000E4927C /* SOMDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C407A212287C91000E4927C /* SOMDetailsViewController.swift */; };
 		8C49E5C42273C611008557FB /* RootUITabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C49E5C32273C611008557FB /* RootUITabBarController.swift */; };
 		8C5E89CE227E911200514434 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5E89CD227E911200514434 /* LocationViewController.swift */; };
 		8C75103F22775E7200D6282C /* CauseDescViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C75103E22775E7200D6282C /* CauseDescViewController.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		8C09224B2280984C0028CB51 /* LocationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationData.swift; sourceTree = "<group>"; };
+		8C407A212287C91000E4927C /* SOMDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SOMDetailsViewController.swift; path = Marilyn/Controllers/SOMDetailsViewController.swift; sourceTree = SOURCE_ROOT; };
 		8C49E5C32273C611008557FB /* RootUITabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootUITabBarController.swift; sourceTree = "<group>"; };
 		8C5E89CD227E911200514434 /* LocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		8C75103E22775E7200D6282C /* CauseDescViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CauseDescViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +70,7 @@
 				8C75103E22775E7200D6282C /* CauseDescViewController.swift */,
 				8CCB162822752A72008580D0 /* CauseTableViewController.swift */,
 				8C5E89CD227E911200514434 /* LocationViewController.swift */,
+				8C407A212287C91000E4927C /* SOMDetailsViewController.swift */,
 				8CEEBAE02284F043006A7A01 /* StateOfMindViewController.swift */,
 			);
 			path = Controllers;
@@ -237,6 +240,7 @@
 				8C49E5C42273C611008557FB /* RootUITabBarController.swift in Sources */,
 				8CCB162722752A47008580D0 /* StateOfMindDescTableViewController.swift in Sources */,
 				8C5E89CE227E911200514434 /* LocationViewController.swift in Sources */,
+				8C407A222287C91000E4927C /* SOMDetailsViewController.swift in Sources */,
 				8C75103F22775E7200D6282C /* CauseDescViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
