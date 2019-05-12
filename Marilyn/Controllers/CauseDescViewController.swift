@@ -22,6 +22,9 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
   
     let searchController = UISearchController(searchResultsController: nil)
 
+    @IBOutlet weak var Button: UIBarButtonItem!
+    @IBOutlet weak var ClearTextButton: UIButton!
+    @IBOutlet weak var UndoSearchButton: UIButton!
     
     @IBOutlet weak var causeTextView: UITextView!
     @IBOutlet weak var tableView: UITableView!
@@ -81,6 +84,16 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
     // MARK: -viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ClearTextButton.layer.cornerRadius = 10
+        UndoSearchButton.layer.cornerRadius = 10
+        
+        causeTextView.layer.masksToBounds = true
+        causeTextView.layer.cornerRadius = 10
+        
+        
+        
+        
         configureFetchedResultsController()
         tableView.dataSource = self
         tableView.dataSource = self

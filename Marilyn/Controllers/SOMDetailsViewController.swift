@@ -11,6 +11,7 @@ import UIKit
 class SOMDetailsViewController: UIViewController {
 
     var wordToSwipe: StateOfMind?
+    @IBOutlet weak var popUpView: UIView!
     
     @IBOutlet weak var StateOfMindLabel: UILabel!
     @IBOutlet weak var StateOfMindRateLabel: UILabel!
@@ -21,8 +22,30 @@ class SOMDetailsViewController: UIViewController {
     @IBOutlet weak var LocationNameLabel: UILabel!
     @IBOutlet weak var LocationAddressLabel: UILabel!
     
+    @IBOutlet weak var BackButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        popUpView.layer.cornerRadius = 20
+        popUpView.layer.masksToBounds = true
+        
+        StateOfMindLabel.layer.masksToBounds = true
+        StateOfMindLabel.layer.cornerRadius = 10
+        StateOfMindRateLabel.layer.masksToBounds = true
+        StateOfMindRateLabel.layer.cornerRadius = 10
+        CauseDescLabel.layer.masksToBounds = true
+        CauseDescLabel.layer.cornerRadius = 10
+        CauseTypeLabel.layer.masksToBounds = true
+        CauseTypeLabel.layer.cornerRadius = 10
+        TimeStampLabel.layer.masksToBounds = true
+        TimeStampLabel.layer.cornerRadius = 10
+        LocationNameLabel.layer.masksToBounds = true
+        LocationNameLabel.layer.cornerRadius = 10
+        LocationAddressLabel.layer.masksToBounds = true
+        LocationAddressLabel.layer.cornerRadius = 10
+        
+        
         
         StateOfMindLabel.text = wordToSwipe?.stateOfMindDesc?.adjective
 
