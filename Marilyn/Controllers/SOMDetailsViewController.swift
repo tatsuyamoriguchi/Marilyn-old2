@@ -25,8 +25,18 @@ class SOMDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         StateOfMindLabel.text = wordToSwipe?.stateOfMindDesc?.adjective
+
         let rateString = String(wordToSwipe!.stateOfMindDesc!.rate)
         StateOfMindRateLabel.text = rateString
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        formatter.timeStyle = .medium //"yyyy-MM-dd HH:mm:ss"
+        let timeStampString = formatter.string(from: (wordToSwipe?.timeStamp)!)
+        TimeStampLabel.text = timeStampString
+        print("++++++++++++++++")
+        print(timeStampString)
+        
         CauseDescLabel.text = wordToSwipe?.cause?.causeDesc
         CauseTypeLabel.text = wordToSwipe?.causeType?.type
         LocationNameLabel.text = wordToSwipe?.location?.locationName
