@@ -28,7 +28,6 @@ class StateOfMindViewController: UIViewController {
         super.viewDidLoad()
         
         configureFetchedResultsController()
-        
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
         
@@ -39,23 +38,11 @@ class StateOfMindViewController: UIViewController {
     
     // To display a red pin right after entering a new SOM location data
     override func viewWillAppear(_ animated: Bool) {
+        
         viewDidLoad()
     }
     
     func fetchAnnotations() {
-    
-/*        guard let pins = fetchedResultsController?.fetchedObjects as? [Location] else { return }
-        // Place past pins onto the map
-        for pin in pins {
-            let pointAnnotation = MKPointAnnotation()
-            pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: pin.latitude, longitude: pin.longitude)
-            pointAnnotation.title = pin.locationName
-            pointAnnotation.subtitle = pin.lastAdjective
-            
-            self.mapView.addAnnotation(pointAnnotation)
-        }
-
-  */
         
         guard let pins = fetchedResultsController?.fetchedObjects as? [StateOfMind] else { return }
         // Place past pins onto the map
@@ -68,9 +55,8 @@ class StateOfMindViewController: UIViewController {
             
             self.mapView.addAnnotation(pointAnnotation)
         }
-        
-        
     }
+    
     
     func configureFetchedResultsController() {
         
@@ -182,28 +168,160 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
         wordToSwipe = fetchedResultsController?.object(at: indexPath) as? StateOfMind
         
         let edit = UITableViewRowAction(style: .default, title: "Details") { action, index in
-           /* print("Editing")
-            if let som = self.fetchedResultsController?.object(at: indexPath) as? StateOfMind {
-                
-                self.somAlert(StateOfMind: som)
-            }
-              */
             self.performSegue(withIdentifier: "toSOMDetailsSegue", sender: self.wordToSwipe)
         }
         
         let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
+
             print("Deleting")
+
             managedContext?.delete(self.wordToSwipe!)
+            
+            let locationName = self.wordToSwipe!.location?.locationName
+         
+            self.replaceLastAdjective(LocationName: locationName!)
+
+            // to refresh annotations on the map, remove all, then fetchAnnotations again
+            self.mapView.removeAnnotations(self.mapView.annotations)
+            self.fetchAnnotations()
         }
         
         do {
             try managedContext?.save()
+            
         } catch {
             print("Saving Error: \(error)")
         }
         
+    
+        //self.mapView.removeAnnotation(self.mapView?.annotations as! MKAnnotation)
+        
+        
         edit.backgroundColor = UIColor.blue
         return [edit, delete]
+        
+    }
+    
+    func recordExists(LocationName: String) -> (Bool, String) {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate?.persistentContainer.viewContext
+        var selectedSOMs = [StateOfMind]()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "StateOfMind")
+        
+//        fetchRequest.predicate = NSPredicate(format: "location.locationName = %d", LocationName)
+
+        do { selectedSOMs = try managedContext?.fetch(fetchRequest) as! [StateOfMind]
+        
+        for selectedSOM in selectedSOMs {
+            print(selectedSOM.location?.locationName as Any)
+        
+            }
+        
+        } catch {
+            print("Error")
+        }
+        
+        /*
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate?.persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "StateOfMind")
+        //let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "StateOfMind")
+        
+        
+        fetchRequest.predicate = NSPredicate(format: "location.locationName = %d", LocationName)
+        let sortDescriptorTypeTime = NSSortDescriptor(key: "timeStamp", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptorTypeTime]
+        
+        var results: [NSManagedObject] = []
+        //var results: [NSFetchRequestResult] = []
+        
+        do {
+            results = try (managedContext?.fetch(fetchRequest))!
+            print("++++++++++++")
+            print(results)
+            print("++++++++++++")
+
+            var lastAdjectiveReturn: String
+            if results.count > 0 {
+                let som = results.first as! StateOfMind
+                lastAdjectiveReturn = som.location!.lastAdjective!
+                
+            } else { lastAdjectiveReturn = "false1" }
+            
+
+            return (results.count > 0, lastAdjectiveReturn)
+            //results = try fetchedResultsController?.performFetch()
+            
+        } catch {
+            print("Error executing fetch request: \(error)")
+        }
+ */
+        //return (results.count > 0, "false2")
+        return (true, "TEST")
+    }
+    
+    
+    func replaceLastAdjective(LocationName: String) {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        var selectedSOMs = [StateOfMind]()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "StateOfMind")
+        
+        fetchRequest.predicate = NSPredicate(format: "location.locationName == %@", LocationName)
+        let sortDescriptorTypeTime = NSSortDescriptor(key: "timeStamp", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptorTypeTime]
+        
+        do { selectedSOMs = try managedContext.fetch(fetchRequest) as! [StateOfMind]
+            
+            // For testing purpose, iterate the array.
+            for selectedSOM in selectedSOMs {
+                print(selectedSOM.location?.locationName as Any)
+            }
+            ////
+
+            
+            let lastAdjective = selectedSOMs.first?.stateOfMindDesc?.adjective
+            
+            print("+++++lastAdjective++++++")
+            print(lastAdjective)
+            print("+++++lastAdjectiveEND++++++")
+            
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
+            //fetchRequest.predicate = NSPredicate(format: "locationName == %@", LocationName)
+            let result = try? managedContext.fetch(fetchRequest)
+            let resultData = result as! [Location]
+            for object in resultData {
+                print(object.lastAdjective)
+                if object.locationName == LocationName {
+                    print("+++LocationName++++++")
+                    print(object.locationName)
+                    print("+++LocationNameEND++++++")
+                    
+                    object.setValue(lastAdjective, forKey: "lastAdjective")
+                    
+                    print("+++lastAdjectiveUsed++++++")
+                    print(object.lastAdjective)
+                    print("+++lastAdjectiveUsedEND++++++")
+                }
+            }
+            
+            //let entity = NSEntityDescription.entity(forEntityName: "Location", in: managedContext)!
+            //let item = NSManagedObject(entity: entity, insertInto: managedContext)
+            //item.setValue(lastAdjective, forKey: "lastAdjective")
+
+            
+        } catch {
+            print("Error")
+        }
+        
+        do {
+            try managedContext.save()
+            
+        } catch {
+            print("Failed to save an item: \(error.localizedDescription)")
+        }
+        
     }
     
     func somAlert(StateOfMind: StateOfMind) {
@@ -263,7 +381,6 @@ extension StateOfMindViewController: MKMapViewDelegate {
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         let region = MKCoordinateRegion(center: pinToZoomOn!.coordinate, span: span)
         mapView.setRegion(region, animated: true)
-        
         
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
