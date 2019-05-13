@@ -250,6 +250,7 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
     
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
         //guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate?.persistentContainer.viewContext
@@ -257,8 +258,8 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
         
         let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
             print("Editing")
+            
             if let stateOfMindDesc = self.fetchedResultsController?.object(at: indexPath) as? StateOfMindDesc {
-                
                 self.stateOfMindEditAlert(StateOfMindDesc: stateOfMindDesc)
             }
         }
@@ -273,15 +274,38 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
         } catch {
             print("Saving Error: \(error)")
         }
-        
         edit.backgroundColor = UIColor.blue
         return [edit, delete]
+       
     }
 
+    func alertDataModificaiton() -> Bool {
+        let alert = UIAlertController(title: "Warning", message: "This modificaiton affects your past state of your mind and locaiton record data. Are you sure to modify it?", preferredStyle: .alert)
+        
+       
+        var choice = true
+        let proceedAciton = UIAlertAction(title: "Sure", style: .default) { (alert: UIAlertAction!) -> Void in
+          choice = true
+        }
+        
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .default) { (alert: UIAlertAction!) -> Void in
+            choice = false
+            
+        }
 
+        //let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(proceedAciton)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+        
+        return choice
+    }
+    
     
     func stateOfMindEditAlert(StateOfMindDesc: StateOfMindDesc) {
-        let alertController = UIAlertController(title: "Edit", message: "Edit the adjective. Use an integer, 100, -25, or -100 for rate.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Edit", message: "Edit the adjective. Use an integer, 100, -25, or -100 for rate. ", preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
             
