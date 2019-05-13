@@ -254,7 +254,7 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
         //guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate?.persistentContainer.viewContext
-        let wordToSwipe = self.fetchedResultsController?.object(at: indexPath)
+        //let wordToSwipe = self.fetchedResultsController?.object(at: indexPath)
         
         let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
             print("Editing")
@@ -264,10 +264,14 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
             }
         }
         
-        let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
+        /*let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
             print("Deleting")
-            managedContext?.delete(wordToSwipe as! NSManagedObject)
+            if let stateOfMindDesc = self.fetchedResultsController?.object(at: indexPath) as? StateOfMindDesc {
+            self.stateOfMindDeleteAlert(StateOfMindDesc: stateOfMindDesc)
+            //managedContext?.delete(wordToSwipe as! NSManagedObject)
+            }
         }
+        */
         
         do {
             try managedContext?.save()
@@ -275,37 +279,31 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
             print("Saving Error: \(error)")
         }
         edit.backgroundColor = UIColor.blue
-        return [edit, delete]
-       
+        //return [edit, delete]
+       return [edit]
     }
 
-    func alertDataModificaiton() -> Bool {
+
+    func stateOfMindDeleteAlert(StateOfMindDesc: StateOfMindDesc) {
         let alert = UIAlertController(title: "Warning", message: "This modificaiton affects your past state of your mind and locaiton record data. Are you sure to modify it?", preferredStyle: .alert)
-        
        
-        var choice = true
         let proceedAciton = UIAlertAction(title: "Sure", style: .default) { (alert: UIAlertAction!) -> Void in
-          choice = true
-        }
-        
-        
-        let cancel = UIAlertAction(title: "Cancel", style: .default) { (alert: UIAlertAction!) -> Void in
-            choice = false
-            
+            let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            let managedContext = appDelegate?.persistentContainer.viewContext
+            //managedContext?.delete(wordToSwipe as! NSManagedObject)
+            managedContext?.delete(StateOfMindDesc)
         }
 
-        //let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         
         alert.addAction(proceedAciton)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
-        
-        return choice
     }
     
     
     func stateOfMindEditAlert(StateOfMindDesc: StateOfMindDesc) {
-        let alertController = UIAlertController(title: "Edit", message: "Edit the adjective. Use an integer, 100, -25, or -100 for rate. ", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Edit", message: "Edit the adjective. Use an integer, 100, -25, or -100 for rate. WARNING: This modificaiton affects your past state of your mind and locaiton record data. Are you sure to modify it?", preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
             

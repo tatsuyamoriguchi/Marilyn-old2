@@ -181,7 +181,7 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
         let managedContext = appDelegate?.persistentContainer.viewContext
         wordToSwipe = fetchedResultsController?.object(at: indexPath) as? StateOfMind
         
-        let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
+        let edit = UITableViewRowAction(style: .default, title: "Details") { action, index in
            /* print("Editing")
             if let som = self.fetchedResultsController?.object(at: indexPath) as? StateOfMind {
                 
