@@ -10,9 +10,12 @@ import UIKit
 
 class DashbardViewController: UIViewController {
 
+    @IBOutlet weak var marilynImage: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        marilynImage.layer.cornerRadius = 20
+        marilynImage.layer.masksToBounds = true
     }
 
 

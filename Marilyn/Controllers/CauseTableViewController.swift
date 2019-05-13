@@ -60,10 +60,62 @@ class CauseTableViewController: UITableViewController {
         } catch {
             print(error.localizedDescription)
         }
-        
+  
     }
 
-
+    @IBAction func addNewOnPressed(_ sender: UIBarButtonItem) {
+        addNewAlert()
+        
+    }
+    
+    func addNewAlert() {
+        let alertController = UIAlertController(title: "Add New", message: "Add a cause type.", preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
+            
+            let newCauseType = alertController.textFields![0]
+            let itemToAdd = newCauseType.text
+            self.save(itemName: itemToAdd!)
+        })
+        
+        alertController.addTextField { (textField: UITextField) in
+            textField.placeholder = "Type a new cause type."
+            saveAction.isEnabled = false
+        }
+        
+        
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: alertController.textFields![0], queue: OperationQueue.main) { (notification) in
+            if (alertController.textFields![0].text?.count)! > 0 {
+                    saveAction.isEnabled = true
+            }
+        }
+        
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+        
+    }
+    
+    func save(itemName: String) {
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "CauseType", in: managedContext)!
+        let item = NSManagedObject(entity: entity, insertInto: managedContext)
+        item.setValue(itemName, forKey: "type")
+        
+        do {
+            try managedContext.save()
+            
+        } catch {
+            print("Failed to save an item: \(error.localizedDescription)")
+        }
+    }
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -103,41 +155,83 @@ class CauseTableViewController: UITableViewController {
     }
     
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+    
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate?.persistentContainer.viewContext
+        let wordToSwipe = self.fetchedResultsController?.object(at: indexPath)
+        
+        let edit = UITableViewRowAction(style: .default, title: "Edit") { action, index in
+            print("Editing")
+            if let causeType = self.fetchedResultsController?.object(at: indexPath) as? CauseType {
+                
+                self.causeTypeEditAlert(CauseType: causeType)
+            }
+        }
+        
+        let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
+            print("Deleting")
+            managedContext?.delete(wordToSwipe as! NSManagedObject)
+        }
+        
+        do {
+            try managedContext?.save()
+        } catch {
+            print("Saving Error: \(error)")
+        }
+        
+        edit.backgroundColor = UIColor.blue
+        return [edit, delete]
+        
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    func causeTypeEditAlert(CauseType: CauseType) {
+        let alertController = UIAlertController(title: "Edit", message: "Edit the cause type.", preferredStyle: .alert)
+        
+        let saveAction = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
+            
+            let newCauseType = alertController.textFields![0]
+            let itemToAdd = newCauseType.text
+          
+            self.update(CauseType: CauseType, ItemToAdd: itemToAdd!)
+        })
+        
+        alertController.addTextField { (textField: UITextField) in
+            textField.placeholder = "Cause Type"
+            saveAction.isEnabled = false
+            textField.text = CauseType.type
+            
+        }
+        
+        
+        NotificationCenter.default.addObserver(forName: UITextField.textDidChangeNotification, object: alertController.textFields![0], queue: OperationQueue.main) { (notification) in
+            if (alertController.textFields![0].text?.count)! > 0 {
+                    saveAction.isEnabled = true
+            
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+        
     }
-    */
 
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    func update(CauseType: CauseType, ItemToAdd: String) {
+        
+        CauseType.setValue(ItemToAdd, forKey: "type")
+        
     }
-    */
-
     
     // MARK: - Navigation
 
@@ -154,4 +248,13 @@ class CauseTableViewController: UITableViewController {
     }
     
 
+}
+
+
+extension CauseTableViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        print("The Controller Content Has Changed.")
+        tableView.reloadData()
+    }
+    
 }
