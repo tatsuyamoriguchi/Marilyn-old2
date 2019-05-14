@@ -26,20 +26,20 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
     }
     
     
-    // MARK: -Search Undo
+  /*  // MARK: -Search Undo
     @IBAction func undoOnPressed(_ sender: UIBarButtonItem) {
     
     configureFetchedResultsController()
         tableView.reloadData()
     }
-    
+    */
     
     // MARK: -Search Bar
     func navBar() {
         searchController.searchBar.delegate = self
         
         searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Adjective"
         tableView.tableHeaderView = searchController.searchBar
 //        navigationItem.searchController = searchController
@@ -55,8 +55,8 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
         let text = searchController.searchBar.text
         if (text?.isEmpty)! {
             print("updateSearchResults text?.isEmpty ")
-            //configureFetchedResultsController()
-            //tableView.reloadData()
+            configureFetchedResultsController()
+            tableView.reloadData()
             
         } else {
             self.fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(adjective contains[c] %@ )", text!)

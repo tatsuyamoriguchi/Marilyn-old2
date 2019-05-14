@@ -22,9 +22,9 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
   
     let searchController = UISearchController(searchResultsController: nil)
 
-    @IBOutlet weak var Button: UIBarButtonItem!
+    @IBOutlet weak var Button: UIButton!
     @IBOutlet weak var ClearTextButton: UIButton!
-    @IBOutlet weak var UndoSearchButton: UIButton!
+    //@IBOutlet weak var UndoSearchButton: UIButton!
     
     @IBOutlet weak var causeTextView: UITextView!
     @IBOutlet weak var tableView: UITableView!
@@ -38,13 +38,13 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
     }
   
     
-    // Undo Search to display all causes
+   /* // Undo Search to display all causes
     @IBAction func undoOnPressed(_ sender: UIButton) {
         configureFetchedResultsController()
         tableView.reloadData()
         
     }
-    
+    */
     
     @IBAction func saveOnPressed(_ sender: Any) {
         
@@ -67,6 +67,11 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
                 save(itemName: causeTextView.text)
             case "Select":
                 print("")
+            case "Undo Search":
+                print("Undo Search was pressed.")
+                configureFetchedResultsController()
+                tableView.reloadData()
+                
             default:
                 print("")
             }
@@ -122,7 +127,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
         // Search Bar
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Cause"
         tableView.tableHeaderView = searchController.searchBar
         //navigationItem.searchController = searchController
@@ -136,11 +141,13 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
         if (text?.isEmpty)! {
             print("updateSearchResults text?.isEmpty ")
             
-            //configureFetchedResultsController()
-            //tableView.reloadData()
+            configureFetchedResultsController()
+            tableView.reloadData()
             
         } else {
             self.fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(causeDesc contains[c] %@ )", text!)
+            buttonMode = "Undo Search"
+            
         }
         do {
             try self.fetchedResultsController?.performFetch()
@@ -153,11 +160,11 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
     
     // Change Navigation Bar Item Button Title, dynamically
     func changeTitle(title: String) {
-        let item = self.navigationItem.rightBarButtonItem!
-        let button = item.customView as! UIButton
+        //let item = self.navigationItem.rightBarButtonItem!
+        //let button = item.customView as! UIButton
         
-        button.titleLabel?.font.withSize(30)
-        button.setTitle(title, for: .normal)
+        Button.titleLabel?.font.withSize(30)
+        Button.setTitle(title, for: .normal)
     }
 
     
@@ -215,34 +222,6 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
         causeTextView.text = ""
     }
    
-/*
-    func causeEditAlert(CauseDesc: Cause) {
-        let alertController = UIAlertController(title: "Edit", message: "Edit the cause.", preferredStyle: .alert)
-        
-        let saveAction = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
-            
-            let newCause = alertController.textFields![0]
-            let itemToAdd = newCause.text
-            
-            self.update(itemToUpdate: CauseDesc, itemName: itemToAdd!)
-            //self.save(itemName: itemToAdd!, itemRate: rateToAdd) // Later add no-nil validation
-            
-            
-        })
-        
-        alertController.addTextField { (textField: UITextField) in
-            //textField.placeholder = "Adjective"
-            //saveAction.isEnabled = false
-            textField.text = CauseDesc.causeDesc
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        alertController.addAction(saveAction)
-        alertController.addAction(cancelAction)
-        present(alertController, animated: true, completion: nil)
-    }
- */
     func update(itemToUpdate: NSManagedObject, itemName: String) {
         print("update itemToUpdate: \(itemToUpdate)")
         itemToUpdate.setValue(itemName, forKey: "causeDesc")

@@ -141,18 +141,18 @@ class LocationViewController: UIViewController, UISearchResultsUpdating, UISearc
         fetchAnnotations()
         
     }
-    
+ /*
     @IBAction func undoSearchOnPressed(_ sender: UIBarButtonItem) {
         configureFetchedResultsController()
         tableView.reloadData()
     }
-    
+  */
     // MARK: -Search Bar
     func navBar() {
         searchController.searchBar.delegate = self
         
         searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search Adjective"
         navigationItem.searchController = searchController
         definesPresentationContext = true
@@ -166,8 +166,8 @@ class LocationViewController: UIViewController, UISearchResultsUpdating, UISearc
         let text = searchController.searchBar.text
         if (text?.isEmpty)! {
             print("updateSearchResults text?.isEmpty ")
-            //configureFetchedResultsController()
-            //tableView.reloadData()
+            configureFetchedResultsController()
+            tableView.reloadData()
             
         } else {
             self.fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(locationName contains[c] %@ )", text!)
