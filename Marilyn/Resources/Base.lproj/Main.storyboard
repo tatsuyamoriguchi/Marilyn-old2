@@ -107,14 +107,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nrd-7C-3N6">
-                                                    <rect key="frame" x="20.000000000000004" y="11.999999999999998" width="33.333333333333336" height="20.333333333333332"/>
+                                                    <rect key="frame" x="15" y="11.999999999999998" width="33.333333333333336" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8AY-mP-zZl">
-                                                    <rect key="frame" x="350" y="11.999999999999998" width="44" height="20.333333333333332"/>
+                                                    <rect key="frame" x="355" y="11.999999999999998" width="44" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -426,9 +426,9 @@
                                     <action selector="addNewOnPressed:" destination="M4o-WS-MAT" id="eVY-EK-Z9X"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="undo" id="mMM-Xf-IRU">
+                            <barButtonItem systemItem="undo" id="Nvw-XT-3rf">
                                 <connections>
-                                    <action selector="undoOnPressed:" destination="M4o-WS-MAT" id="HmB-Pe-5Ua"/>
+                                    <action selector="undoOnPressed:" destination="M4o-WS-MAT" id="KX7-v2-Nlm"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -535,20 +535,20 @@
                                     <action selector="clearToAddNewOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="nf6-vn-926"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DdT-ED-fIl">
-                                <rect key="frame" x="270" y="207" width="136" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FNi-Lu-8rb">
+                                <rect key="frame" x="270" y="204" width="136" height="33"/>
                                 <color key="backgroundColor" red="0.83741801979999997" green="0.83743780850000005" blue="0.83742713930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="136" id="NCN-Tb-CBR"/>
-                                    <constraint firstAttribute="height" constant="33" id="Qbv-V5-5qc"/>
+                                    <constraint firstAttribute="width" constant="136" id="ITh-gY-mbP"/>
+                                    <constraint firstAttribute="height" constant="33" id="jXu-8B-Czg"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
                                 <state key="normal" title="Undo Search">
                                     <color key="titleColor" red="0.47684186699999997" green="0.50480759139999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="clearToAddNewOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="8gf-YR-Tbb"/>
-                                    <action selector="undoOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="bdY-HJ-oth"/>
+                                    <action selector="clearToAddNewOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="IfR-Bb-4j3"/>
+                                    <action selector="undoOnPressed:" destination="4tn-F3-9h9" eventType="touchUpInside" id="LmK-bz-Xet"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -556,16 +556,17 @@
                         <constraints>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="leading" secondItem="7PJ-9E-IZ4" secondAttribute="trailing" constant="-144" id="4HY-Ni-mgX"/>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="bottom" secondItem="Ydg-7x-t9s" secondAttribute="bottom" id="CgO-TD-9bi"/>
+                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="FNi-Lu-8rb" secondAttribute="trailing" constant="8" id="NyA-l0-GDP"/>
                             <constraint firstItem="fjb-qG-275" firstAttribute="top" secondItem="Ydg-7x-t9s" secondAttribute="top" id="Uih-gl-SEx"/>
-                            <constraint firstItem="DdT-ED-fIl" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="11" id="WeT-wL-Dam"/>
+                            <constraint firstItem="FNi-Lu-8rb" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="8" id="V7R-ob-J7l"/>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="trailing" secondItem="Ydg-7x-t9s" secondAttribute="trailing" id="ah2-Ec-Veb"/>
                             <constraint firstItem="7PJ-9E-IZ4" firstAttribute="top" secondItem="fjb-qG-275" secondAttribute="bottom" constant="12" id="cEV-NN-wIL"/>
                             <constraint firstItem="7PJ-9E-IZ4" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="cqY-OV-r4l"/>
+                            <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="FNi-Lu-8rb" secondAttribute="bottom" constant="14" id="dZc-El-Bns"/>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="top" secondItem="7PJ-9E-IZ4" secondAttribute="bottom" constant="10" id="hko-3s-lah"/>
                             <constraint firstItem="Bhy-R0-iK5" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" id="kuB-Sb-Ws3"/>
                             <constraint firstItem="fjb-qG-275" firstAttribute="leading" secondItem="Ydg-7x-t9s" secondAttribute="leading" constant="8" id="nbR-7h-x8f"/>
                             <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="fjb-qG-275" secondAttribute="trailing" constant="8" id="vUy-M4-nBi"/>
-                            <constraint firstItem="Ydg-7x-t9s" firstAttribute="trailing" secondItem="DdT-ED-fIl" secondAttribute="trailing" constant="8" id="xr9-io-k84"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ydg-7x-t9s"/>
                     </view>
@@ -592,7 +593,7 @@
                     <connections>
                         <outlet property="Button" destination="bQY-VN-2rx" id="RLx-tP-kFy"/>
                         <outlet property="ClearTextButton" destination="7PJ-9E-IZ4" id="fGJ-fJ-Fq5"/>
-                        <outlet property="UndoSearchButton" destination="DdT-ED-fIl" id="4JN-2Y-Cm2"/>
+                        <outlet property="UndoSearchButton" destination="FNi-Lu-8rb" id="mI7-nS-IBc"/>
                         <outlet property="causeTextView" destination="fjb-qG-275" id="rdd-D2-BBt"/>
                         <outlet property="tableView" destination="Bhy-R0-iK5" id="KGL-0A-WRm"/>
                     </connections>
@@ -656,11 +657,18 @@
                         <viewLayoutGuide key="safeArea" id="Buz-Gr-xxF"/>
                     </view>
                     <navigationItem key="navigationItem" title="Select or Add Location" largeTitleDisplayMode="never" id="5s0-U8-dHs">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Eig-ak-8FZ">
-                            <connections>
-                                <action selector="addOnPressed:" destination="aEp-qf-n6c" id="vA0-S7-f3v"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="Eig-ak-8FZ">
+                                <connections>
+                                    <action selector="addOnPressed:" destination="aEp-qf-n6c" id="vA0-S7-f3v"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Undo" id="a4Z-gy-XyO">
+                                <connections>
+                                    <action selector="undoSearchOnPressed:" destination="aEp-qf-n6c" id="pvo-0v-07y"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="xua-dK-P7P" id="Zq4-5t-csj"/>

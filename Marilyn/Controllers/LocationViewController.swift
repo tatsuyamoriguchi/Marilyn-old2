@@ -14,16 +14,16 @@ import UserNotifications
 import Contacts
 
 
-class LocationViewController: UIViewController {
-    
+class LocationViewController: UIViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
     var stateOfMindDesc: StateOfMindDesc!
     var causeDesc: Cause!
     var causeTypeSelected: CauseType!
     var timeStamp: Date!
     
-    
+    let searchController = UISearchController(searchResultsController: nil)
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
     @IBAction func addOnPressed(_ sender: UIBarButtonItem) {
@@ -131,14 +131,55 @@ class LocationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navBar()
+        
         configureFetchedResultsController()
         
         mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
-
         fetchAnnotations()
         
     }
+    
+    @IBAction func undoSearchOnPressed(_ sender: UIBarButtonItem) {
+        configureFetchedResultsController()
+        tableView.reloadData()
+    }
+    
+    // MARK: -Search Bar
+    func navBar() {
+        searchController.searchBar.delegate = self
+        
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search Adjective"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+        
+        
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    // MARK: -Update Search Results
+    func updateSearchResults(for searchController: UISearchController) {
+        let text = searchController.searchBar.text
+        if (text?.isEmpty)! {
+            print("updateSearchResults text?.isEmpty ")
+            //configureFetchedResultsController()
+            //tableView.reloadData()
+            
+        } else {
+            self.fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "(locationName contains[c] %@ )", text!)
+        }
+        do {
+            try self.fetchedResultsController?.performFetch()
+            self.tableView.reloadData()
+        } catch { print(error) }
+    }
+    
+    
+    
     
     func fetchAnnotations() {
         
@@ -221,19 +262,8 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         timeStamp = Date()
         let location = self.fetchedResultsController?.object(at: indexPath) as? Location
         
-        //let entityLocation = NSEntityDescription.entity(forEntityName: "Location", in: managedContext)!
-        //let itemSelected = NSManagedObject(entity: entityLocation, insertInto: managedContext)
-        
         location?.setValue(timeStamp, forKey: "timeStamp")
-        print("++++ 1 ++++")
-        print(location?.lastAdjective)
-        print("++++ 2 ++++")
-        print(stateOfMindDesc.adjective!)
-       
         location?.setValue(stateOfMindDesc.adjective, forKey: "lastAdjective")
-         print("++++ 3 ++++")
-        print(location?.lastAdjective)
-        
         saveSOM(location: location!)
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -266,11 +296,6 @@ extension LocationViewController: UITableViewDelegate, UITableViewDataSource {
         let delete = UITableViewRowAction(style: .default, title: "Delete") { action, index in
             print("Deleting")
             managedContext?.delete(wordToSwipe as! NSManagedObject)
-            
-            // Code to Add:
-            // if stateOfMind with the same location data exists, replace lastAdjective with the most recent
-            // stateOfMind adjective
-            // else delete the locaiton data too.
             
             }
         

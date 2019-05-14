@@ -25,19 +25,24 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
         tableView.reloadData()
     }
     
+    
+    // MARK: -Search Undo
     @IBAction func undoOnPressed(_ sender: UIBarButtonItem) {
     
     configureFetchedResultsController()
         tableView.reloadData()
     }
     
+    
+    // MARK: -Search Bar
     func navBar() {
         searchController.searchBar.delegate = self
         
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = true
         searchController.searchBar.placeholder = "Search Adjective"
-        navigationItem.searchController = searchController
+        tableView.tableHeaderView = searchController.searchBar
+//        navigationItem.searchController = searchController
         definesPresentationContext = true
         
         
@@ -45,12 +50,11 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
     }
     
 
-    // Search bar
+    // MARK: -Update Search Results
     func updateSearchResults(for searchController: UISearchController) {
         let text = searchController.searchBar.text
         if (text?.isEmpty)! {
             print("updateSearchResults text?.isEmpty ")
-            
             //configureFetchedResultsController()
             //tableView.reloadData()
             
@@ -62,9 +66,9 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
             self.tableView.reloadData()
         } catch { print(error) }
     }
- 
- 
-  
+    
+    
+    // MARK: -Configure FetchResultsController
     private func configureFetchedResultsController() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -85,15 +89,7 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
         }
     }
     
-/*   func searchBarIsEmpty() -> Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    func isFilterting() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
-    }
- */
-    
+    // MARK: -Add New Adjective
     @IBAction func addNewOnPressed(_ sender: UIBarButtonItem) {
     
         // Pass empty strings to add a new item

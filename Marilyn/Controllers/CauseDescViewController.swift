@@ -37,6 +37,7 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
         
     }
   
+    
     // Undo Search to display all causes
     @IBAction func undoOnPressed(_ sender: UIButton) {
         configureFetchedResultsController()
@@ -85,8 +86,8 @@ class CauseDescViewController: UIViewController, UITextViewDelegate, NSFetchedRe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ClearTextButton.layer.cornerRadius = 10
-        UndoSearchButton.layer.cornerRadius = 10
+        //ClearTextButton.layer.cornerRadius = 10
+        //UndoSearchButton.layer.cornerRadius = 10
         
         causeTextView.layer.masksToBounds = true
         causeTextView.layer.cornerRadius = 10
