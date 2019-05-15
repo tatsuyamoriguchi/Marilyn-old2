@@ -137,26 +137,7 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
     
         self.mapView.addAnnotation(pointAnnotation)
         mapView.selectAnnotation(pointAnnotation, animated: true)
-        print("++++++++++++")
-        print(pointAnnotation.title!)
-
-
-        /*
-        if let stateOM = fetchedResultsController?.object(at: indexPath) as? StateOfMind {
-        
-            let pointName = stateOM.location?.locationName
-            let searchResutls = mapView.annotations.filter { annotation in
-                return (annotation.title??.localizedCaseInsensitiveContains(pointName!) ?? false)
-            }
-            print("+++++++++++++")
-            print(searchResutls) // MKPointAnnotation???
-            
-            mapView.selectAnnotation(searchResutls as! MKAnnotation, animated: true)
-        }*/
     }
-    
-    
-    
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
@@ -193,75 +174,11 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
             print("Saving Error: \(error)")
         }
         
-    
-        //self.mapView.removeAnnotation(self.mapView?.annotations as! MKAnnotation)
-        
-        
         edit.backgroundColor = UIColor.blue
         return [edit, delete]
         
     }
-    
-    func recordExists(LocationName: String) -> (Bool, String) {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        let managedContext = appDelegate?.persistentContainer.viewContext
-        var selectedSOMs = [StateOfMind]()
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "StateOfMind")
-        
-//        fetchRequest.predicate = NSPredicate(format: "location.locationName = %d", LocationName)
 
-        do { selectedSOMs = try managedContext?.fetch(fetchRequest) as! [StateOfMind]
-        
-        for selectedSOM in selectedSOMs {
-            print(selectedSOM.location?.locationName as Any)
-        
-            }
-        
-        } catch {
-            print("Error")
-        }
-        
-        /*
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        let managedContext = appDelegate?.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "StateOfMind")
-        //let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "StateOfMind")
-        
-        
-        fetchRequest.predicate = NSPredicate(format: "location.locationName = %d", LocationName)
-        let sortDescriptorTypeTime = NSSortDescriptor(key: "timeStamp", ascending: false)
-        fetchRequest.sortDescriptors = [sortDescriptorTypeTime]
-        
-        var results: [NSManagedObject] = []
-        //var results: [NSFetchRequestResult] = []
-        
-        do {
-            results = try (managedContext?.fetch(fetchRequest))!
-            print("++++++++++++")
-            print(results)
-            print("++++++++++++")
-
-            var lastAdjectiveReturn: String
-            if results.count > 0 {
-                let som = results.first as! StateOfMind
-                lastAdjectiveReturn = som.location!.lastAdjective!
-                
-            } else { lastAdjectiveReturn = "false1" }
-            
-
-            return (results.count > 0, lastAdjectiveReturn)
-            //results = try fetchedResultsController?.performFetch()
-            
-        } catch {
-            print("Error executing fetch request: \(error)")
-        }
- */
-        //return (results.count > 0, "false2")
-        return (true, "TEST")
-    }
-    
-    
     func replaceLastAdjective(LocationName: String) {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -283,33 +200,16 @@ extension StateOfMindViewController: UITableViewDelegate, UITableViewDataSource 
             
             let lastAdjective = selectedSOMs.first?.stateOfMindDesc?.adjective
             
-            print("+++++lastAdjective++++++")
-            print(lastAdjective)
-            print("+++++lastAdjectiveEND++++++")
-            
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Location")
             //fetchRequest.predicate = NSPredicate(format: "locationName == %@", LocationName)
             let result = try? managedContext.fetch(fetchRequest)
             let resultData = result as! [Location]
             for object in resultData {
-                print(object.lastAdjective)
                 if object.locationName == LocationName {
-                    print("+++LocationName++++++")
-                    print(object.locationName)
-                    print("+++LocationNameEND++++++")
                     
                     object.setValue(lastAdjective, forKey: "lastAdjective")
-                    
-                    print("+++lastAdjectiveUsed++++++")
-                    print(object.lastAdjective)
-                    print("+++lastAdjectiveUsedEND++++++")
                 }
             }
-            
-            //let entity = NSEntityDescription.entity(forEntityName: "Location", in: managedContext)!
-            //let item = NSManagedObject(entity: entity, insertInto: managedContext)
-            //item.setValue(lastAdjective, forKey: "lastAdjective")
-
             
         } catch {
             print("Error")
@@ -393,15 +293,13 @@ extension StateOfMindViewController: MKMapViewDelegate {
             let selectedLocationName = selectedAnnotation.title
             fetchRequest.predicate = NSPredicate(format: "location.locationName == %@", selectedLocationName!)
             
-            print("selectedAnnotation.title: \(String(describing: selectedAnnotation.title))")
         }
         
         let sortDescriptorType = NSSortDescriptor(key: "timeStamp", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptorType]
         
-        
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: appDelegate.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController?.delegate = self as? NSFetchedResultsControllerDelegate
+        fetchedResultsController?.delegate = self as NSFetchedResultsControllerDelegate
         do {
             try fetchedResultsController?.performFetch()
         } catch {

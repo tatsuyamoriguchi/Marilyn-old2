@@ -25,6 +25,7 @@
 		8CCB162922752A72008580D0 /* CauseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CCB162822752A72008580D0 /* CauseTableViewController.swift */; };
 		8CE8171D227418D800F776C1 /* StateOfMindDesc.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8CE8171C227418D800F776C1 /* StateOfMindDesc.plist */; };
 		8CEEBAE12284F043006A7A01 /* StateOfMindViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CEEBAE02284F043006A7A01 /* StateOfMindViewController.swift */; };
+		8CF7AADE228B53F000405462 /* LineChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF7AADD228B53F000405462 /* LineChartViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		8CCB162822752A72008580D0 /* CauseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CauseTableViewController.swift; sourceTree = "<group>"; };
 		8CE8171C227418D800F776C1 /* StateOfMindDesc.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = StateOfMindDesc.plist; sourceTree = "<group>"; };
 		8CEEBAE02284F043006A7A01 /* StateOfMindViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateOfMindViewController.swift; sourceTree = "<group>"; };
+		8CF7AADD228B53F000405462 /* LineChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LineChartViewController.swift; path = Marilyn/Controllers/LineChartViewController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				8C75103E22775E7200D6282C /* CauseDescViewController.swift */,
 				8CCB162822752A72008580D0 /* CauseTableViewController.swift */,
 				8C5E89CD227E911200514434 /* LocationViewController.swift */,
+				8CF7AADD228B53F000405462 /* LineChartViewController.swift */,
 				8C407A212287C91000E4927C /* SOMDetailsViewController.swift */,
 				8CEEBAE02284F043006A7A01 /* StateOfMindViewController.swift */,
 			);
@@ -232,6 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C09224C2280984C0028CB51 /* LocationData.swift in Sources */,
+				8CF7AADE228B53F000405462 /* LineChartViewController.swift in Sources */,
 				8CEEBAE12284F043006A7A01 /* StateOfMindViewController.swift in Sources */,
 				8CCB162922752A72008580D0 /* CauseTableViewController.swift in Sources */,
 				8CA11BC22272CC7200F2AAAD /* Marilyn.xcdatamodeld in Sources */,
