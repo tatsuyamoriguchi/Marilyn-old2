@@ -17,6 +17,7 @@ class LineChartViewController: UIViewController {
     var locationArray: [Any] = []
     var somArray: [Date] = []
     var locaName: String? = "All"
+    var average: Int16?
     
     @IBOutlet weak var LocationPicker: UIPickerView!
     
@@ -53,8 +54,8 @@ class LineChartViewController: UIViewController {
             somArrayString.append(somArrayString)
         }
         */
-        textView.text = "somArray: \(somArray)"
-        print("final somArray: \(somArray)")
+        textView.text = "somArray: \(somArray)  average: \(String(describing: average))"
+    
     }
 
     //// Mock up for graphic line chart, for now testing purpose,
@@ -108,8 +109,8 @@ class LineChartViewController: UIViewController {
         case "24hrs":
             print("24hrs")
             let endDate = Date()
-            //let startDate = Calendar.current.date(byAdding: .day, value: -1, to: endDate)
-            let startDate = Calendar.current.date(byAdding: .hour, value: -7, to: endDate)
+            let startDate = Calendar.current.date(byAdding: .day, value: -1, to: endDate)
+            //let startDate = Calendar.current.date(byAdding: .hour, value: -7, to: endDate)
             //print("startDate: \(startDate)")
             //print("endDate: \(endDate)")
             populateSOMData(startDate: startDate!, endDate: endDate, selectedLocationName: locaName!)
@@ -146,40 +147,15 @@ class LineChartViewController: UIViewController {
 
 
     func populateSOMData(startDate: Date, endDate: Date, selectedLocationName: String){
+        
         somArray = []
+        average = 0
+        
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate?.persistentContainer.viewContext
         var items = [StateOfMind]()
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "StateOfMind")
         
-        print("selectedLocationName: \(selectedLocationName)")
-        
-/*        if selectedLocationName != "All" {
-            fetchRequest.predicate = NSPredicate(format: "location.locationName == %@", selectedLocationName)
-            print("Howdy!")
-            
-        }
-  */
-        // selectedLocaitonName = "All" && startDate == endDate
-/*
-        if selectedLocationName != "All" {
-            if startDate != endDate {
-                //fetchRequest.predicate = NSPredicate(format: "(timeStamp >= %@) AND (timeStamp < %@)", startDate as CVarArg, endDate as CVarArg)
-                fetchRequest.predicate = NSPredicate(format: "(location.locationName == %@) AND (timeStamp >= %@) AND (timeStamp < %@)", selectedLocationName, startDate as CVarArg, endDate as CVarArg)
-            }
-            else {
-                fetchRequest.predicate = NSPredicate(format: "location.locationName == %@", selectedLocationName)
-            }
-        } else if startDate != endDate {
-            fetchRequest.predicate = NSPredicate(format: "(timeStamp >= %@) AND (timeStamp < %@)", startDate as CVarArg, endDate as CVarArg)
-        } else {}
-*/
-        
-        // selectedLocationName : startDate == endDate
-        // All : All Time(true)
-        // All : limited time
-        // Location : All time
-        // Locaiton : Limited time
         
         if (selectedLocationName != "All") && (startDate != endDate) {
             //fetchRequest.predicate = NSPredicate(format: "(timeStamp >= %@) AND (timeStamp < %@)", startDate as CVarArg, endDate as CVarArg)
@@ -192,23 +168,359 @@ class LineChartViewController: UIViewController {
             fetchRequest.predicate = NSPredicate(format: "(timeStamp >= %@) AND (timeStamp < %@)", startDate as CVarArg, endDate as CVarArg)
             
         } else {}
-
-    
-    
         
         let sortDescriptorTypeTime = NSSortDescriptor(key: "timeStamp", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptorTypeTime]
+
+
+        
+
+        
+/*
+        
+        /////////////////////////////////////////////////
+        ///// For a year /////////////////////////////////
+        var arrayYear = [0,0,0,0,0,0,0,0,0,0,0,0]
+        var somCountPerUnit = [0,0,0,0,0,0,0,0,0,0,0,0]
+        var averageYear = [0,0,0,0,0,0,0,0,0,0,0,0]
+        let calendar = Calendar.current
+        let now = Date()
+        let today = calendar.component(.month, from: now)
         
         do { items = try managedContext?.fetch(fetchRequest) as! [StateOfMind]
             for item in items {
                 somArray.append(item.timeStamp!)
-                print("item.location.locationName: \(item.location?.locationName)")
+                
+                print("item.location.locationName: \(String(describing: item.location?.locationName))")
+                
+                //////TEST code to fill array24hrs with the average number of rates
+                ////// each element represents an hour unit, 0 for 24 hours before, 1 for 23 hours before...
+                ////// this is to create a line chart, later.
+                let date = item.timeStamp
+                let month = calendar.component(.month, from: date!)
+                print("month: \(month)")
+                // calculate how many months between the date and today, if 12, index is 0, 11 : 1, 10 : 2, 9 : 3, 1 : 10, 0 : 11
+                let diff = today - month
+                
+                print("+++++++diff+++++++++")
+                print(diff)
+                
+                let index = 11 - diff  /// if diff is 1, then index => 10, 0 : 11, 11 : 0
+                
+                //              array24hrs.insert(Int((item.stateOfMindDesc?.rate)!), at: hour)
+                // To avoid an error Cannot assign Int type with Int16 type
+                
+                var rate: Int16
+                rate = item.stateOfMindDesc?.rate ?? 0
+                
+                arrayYear[index] += Int(rate)
+                /// Will execute the following line only if there is a SOM data. If no SOM data,
+                /// the element of the array remains the same as '0'
+                somCountPerUnit[index] += 1
             }
+
+        } catch {   print("Error")  }
+            
+            //
+            print("++++++++++arrayYear+++++++++")
+            print(arrayYear)
+            print(" ")
+            // sum up the adjective rate data of each somArray elements
+            let sum = items.reduce(0, {$0 + ($1.stateOfMindDesc?.rate)!})
+            print("+++++++++Total Rate Sum++++++++++++")
+            print("sum: \(sum)")
+            
+            if items.count > 0 { average = sum/Int16(items.count)
+                
+                print("++++++++avegrage++++++++++++++")
+                print(average ?? 0)
+                
+            } else { print("No data to calculate found.") }
+        
+        var arrayIndex = 0
+        for i in arrayYear {
+            if i != 0 {
+            
+                let average = i/somCountPerUnit[arrayIndex]
+                averageYear[arrayIndex] = average
+                
+            }
+            arrayIndex += 1
+        }
+        
+        print("++++++averageYear++++++++")
+        print(averageYear)
+        
+  */
+        
+        
+        
+        /*
+         /////////////////////////////////////////////////
+         ///// For 30days /////////////////////////////////
+         var array30days = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+         var somCountPerUnit = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+         var average30days = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+         
+         let calendar = Calendar.current
+         let now = Date()
+         let today = calendar.component(.day, from: now)
+         
+         do { items = try managedContext?.fetch(fetchRequest) as! [StateOfMind]
+         for item in items {
+         somArray.append(item.timeStamp!)
+         
+            print("item.location.locationName: \(String(describing: item.location?.locationName))")
+         
+         //////TEST code to fill array24hrs with the average number of rates
+         ////// each element represents an hour unit, 0 for 24 hours before, 1 for 23 hours before...
+         ////// this is to create a line chart, later.
+         let date = item.timeStamp
+         let day = calendar.component(.day, from: date!)
+         print("day: \(day)")
+            // calculate how many days between the date and today, if 30, index is 0, 29 : 1, 28 : 2, 20 : 10, 15 : 15, 10: 20, 5 : 25, 0 : 30
+            let diff = today - day
+            
+
+            
+            
+            print("+++++++diff+++++++++")
+            print(diff)
+            
+            let index = 30 - diff  /// today = 16, if day = 15 then index => 28, 16:29, 14;27, 10:23,
+         
+         //              array24hrs.insert(Int((item.stateOfMindDesc?.rate)!), at: hour)
+         // To avoid an error Cannot assign Int type with Int16 type
+         var rate: Int16
+         rate = item.stateOfMindDesc?.rate ?? 0
+            array30days[index] += Int(rate)
+            somCountPerUnit[index] += 1
+         }
+         
+         } catch {
+         print("Error")
+         }
+         
+         //
+         print("++++++++++array30days+++++++++")
+        print(array30days)
+         print(" ")
+         // sum up the adjective rate data of each somArray elements
+         let sum = items.reduce(0, {$0 + ($1.stateOfMindDesc?.rate)!})
+         print("+++++++++Total Rate Sum++++++++++++")
+         print("sum: \(sum)")
+         
+         if items.count > 0 { average = sum/Int16(items.count)
+         
+         print("++++++++avegrage++++++++++++++")
+            print(average ?? 0)
+         
+         } else { print("No data to calculate found.") }
+         
+         /////////
+         var arrayIndex = 0
+         for i in array30days {
+         if i != 0 {
+         
+         let average = i/somCountPerUnit[arrayIndex]
+         average30days[arrayIndex] = average
+         
+         }
+         arrayIndex += 1
+         }
+         
+         print("++++++average30days++++++++")
+         print(average30days)
+         
+         
+*/
+
+        
+/*
+        /////////////////////////////////////////////////
+        ///// For 7days /////////////////////////////////
+        var array7days = [0,0,0,0,0,0,0]
+         var somCountPerUnit = [0,0,0,0,0,0,0]
+         var average7days = [0,0,0,0,0,0,0]
+        
+         let calendar = Calendar.current
+        let now = Date()
+        let today = calendar.component(.day, from: now)
+        
+        do { items = try managedContext?.fetch(fetchRequest) as! [StateOfMind]
+            for item in items {
+                somArray.append(item.timeStamp!)
+                
+                print("item.location.locationName: \(item.location?.locationName)")
+                
+                //////TEST code to fill array24hrs with the average number of rates
+                ////// each element represents an hour unit, 0 for 24 hours before, 1 for 23 hours before...
+                ////// this is to create a line chart, later.
+                let date = item.timeStamp
+                let day = calendar.component(.day, from: date!)
+                print("day: \(day)")
+                let index = day - today + 6 /// today = 16, if day = 15 then index => 5, 16=6, 14=4, 10=0
+
+                //              array24hrs.insert(Int((item.stateOfMindDesc?.rate)!), at: hour)
+                // To avoid an error Cannot assign Int type with Int16 type
+                var rate: Int16
+                rate = item.stateOfMindDesc?.rate ?? 0
+                array7days[index] += Int(rate)
+                somCountPerUnit[index] += 1
+            }
+            
         } catch {
             print("Error")
         }
+        
+        //
+        print("++++++++++array24hrs+++++++++")
+        print(array7days)
+        print(" ")
+        // sum up the adjective rate data of each somArray elements
+        let sum = items.reduce(0, {$0 + ($1.stateOfMindDesc?.rate)!})
+        print("+++++++++Total Rate Sum++++++++++++")
+        print("sum: \(sum)")
+        
+        if items.count > 0 { average = sum/Int16(items.count)
+            
+            print("++++++++avegrage++++++++++++++")
+            print(average)
+            
+        } else { print("No data to calculate found.") }
+ 
+         /////////
+         var arrayIndex = 0
+         for i in array7days {
+         if i != 0 {
+         
+         let average = i/somCountPerUnit[arrayIndex]
+         average7days[arrayIndex] = average
+         
+         }
+         arrayIndex += 1
+         }
+         
+         print("++++++average7days++++++++")
+         print(average7days)
+         
+         
+         
+         */
+        
+        
+
+
+
+       ///// For 24hrs /////////////////////////////////
+        var array24hrs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+         var somCountPerUnit = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+         var average24hrs = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+         
+        let calendar = Calendar.current
+        
+        do { items = try managedContext?.fetch(fetchRequest) as! [StateOfMind]
+            for item in items {
+                somArray.append(item.timeStamp!)
+                
+                print("item.location.locationName: \(item.location?.locationName)")
+                
+                //////TEST code to fill array24hrs with the average number of rates
+                ////// each element represents an hour unit, 0 for 24 hours before, 1 for 23 hours before...
+                ////// this is to create a line chart, later.
+                let date = item.timeStamp
+                let hour = calendar.component(.hour, from: date!)
+                
+                print("hour: \(hour)")
+//              array24hrs.insert(Int((item.stateOfMindDesc?.rate)!), at: hour)
+                // To avoid an error Cannot assign Int type with Int16 type
+                var rate: Int16
+                rate = item.stateOfMindDesc?.rate ?? 0
+                array24hrs[hour] += Int(rate)
+                somCountPerUnit[hour] += 1
+             }
+
+        } catch {
+            print("Error")
+        }
+
+        // sum up the adjective rate data of each somArray elements
+        let sum = items.reduce(0, {$0 + ($1.stateOfMindDesc?.rate)!})
+        print("+++++++++Total Rate Sum++++++++++++")
+        print("sum: \(sum)")
+        
+        if items.count > 0 { average = sum/Int16(items.count)
+        
+            print("++++++++avegrage++++++++++++++")
+            print(average)
+        
+        } else { print("No data to calculate found.") }
+         
+         /////////
+         var arrayIndex = 0
+         for i in array24hrs {
+         if i != 0 {
+         
+         let average = i/somCountPerUnit[arrayIndex]
+         average24hrs[arrayIndex] = average
+         
+         }
+         arrayIndex += 1
+         }
+         
+         print("++++++average24hrs++++++++")
+         print(average24hrs)
+
+   
+        /*
+         
+         
+        
+        /////
+        ///// X axis uit: Last 24hrs-> hour, Last 7 days-> day, Last month -> day, Last year -> 12 months
+        ///// All time -> per year average
+        
+        //// for past 24hrs, get 24 hrs ago from the current time, if any som data exists, calculate their rate average
+        //// value, then put them into one of 24 elements of the array.
+        //// calculate the sum of som values for every hour and get the average value then put it into array24hrs
+        //// take MM data and everytime MM value changes, run the calculation
+        ////
+        //// Get the current local time Date()
+        //// let currentLocalTime = Date().description(with: Locale.current)
+
+       ///////////////TEST//////////////////////
+        print("++++++++++++TEST STARTS++++++++++++++++++")
+        //let currentLocalTime = Date().description(with: Locale.current)
+        let timeZone = TimeZone.current
+        let currentLocalTime = Calendar.current.dateComponents(in: timeZone, from: Date())
+        
+        // For past 24 hrs
+        var endPoint = currentLocalTime.hour! + 1
+        var startPoint = endPoint - 24
+        print("24hrs startPoint : endPoint = \(startPoint) : \(endPoint)")
+        // For past 7 days
+        endPoint = currentLocalTime.day! + 1
+        startPoint = endPoint - 7
+        print("7days startPoint : endPoint = \(startPoint) : \(endPoint)")
+        // For past 30 days
+        endPoint = currentLocalTime.day! + 1
+        startPoint = endPoint - 30
+        print("1month startPoint : endPoint = \(startPoint) : \(endPoint)")
+        // For past year
+        endPoint = currentLocalTime.month! + 1
+        startPoint = endPoint - 12
+        print("1year startPoint : endPoint = \(startPoint) : \(endPoint)")
+        // For All Time
+        endPoint = currentLocalTime.year!
+        startPoint = 0 // whatever the first element timeStamp value is
+        print("alltime startPoint : endPoint = \(startPoint) : \(endPoint)")
+        print("++++++++++++TEST ENDS++++++++++++++++++")
+        
+  */
+
     }
     
+ 
     func populateLocationData(){
         //var resultData: [String]
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -262,4 +574,6 @@ extension Date {
         dateFormatter.dateStyle = style
         return dateFormatter.string(from: self)
     }
+
+
 }
