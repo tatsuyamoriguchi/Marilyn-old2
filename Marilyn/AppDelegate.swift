@@ -73,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     dataObject.causeDesc = item
                                     dataObject.timeStamp = now
                                 }
+                                print("CauseDec loaded")
                             }
                         case "CauseType":
                             if let arrayContents = NSArray(contentsOf: urlPath) as? [String] {
@@ -80,6 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                     let dataObject = CauseType(context: backgroundContext)
                                     dataObject.type = item
                                 }
+                                print("CauseType loaded")
                             }
                         
                         case "StateOfMindDesc":
@@ -87,9 +89,71 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 for (itemA, itemB) in dictContents {
                                     let dataObject = StateOfMindDesc(context: backgroundContext)
                                     dataObject.adjective = itemA
+                                    //let itemBInt16 = Int16(itemB)
                                     dataObject.rate = itemB as! Int16
                                 }
+                                print("StateOfMindDesc loaded")
                             }
+                            
+                       /* case "StateOfMind":
+                              if let arrayContents = NSArray(contentsOf: urlPath) as? [Date] {
+                                for (item) in arrayContents {
+                                    let dataObjects = StateOfMind(context: backgroundContext)
+                                    dataObjects.timeStamp = item
+                            
+                            }
+/*                            if let arrayContents = NSArray(contentsOf: urlPath) as? [[String : AnyObject]] {
+                                for (_) in arrayContents {
+                                    
+                                    //for (itemA, itemB) in item {
+                                    
+                                        let dataObject = StateOfMind(context: backgroundContext)
+                                        
+                                    dataObject.timeStamp = (arrayContents[0]["timeStamp"] as! Date)
+                                    
+                             
+                                    dataObject.cause = arrayContents[1]["cause"] as? Cause
+                                        dataObject.causeType = arrayContents[2]["causeType"] as? CauseType
+                                        dataObject.stateOfMindDesc?.adjective = arrayContents[3]["adjective"] as? String
+                                    dataObject.stateOfMindDesc?.rate = (arrayContents[4]["rate"] as? Int16)!
+                                        dataObject.location?.locationName = arrayContents[5]["locationName"] as? String
+                                    dataObject.location?.latitude = (arrayContents[6]["latitude"] as? Double)!
+                                    dataObject.location?.longitude = (arrayContents[7]["longitude"] as? Double)!
+                                        dataObject.location?.timeStamp = arrayContents[8]["locaitonTimeStamp"] as? Date
+ */
+
+                                        
+                                        /*
+                                        switch itemA {
+                                        case "timeStamp":
+                                            dataObject.timeStamp = itemB as? Date
+                                        case "cause":
+                                            dataObject.cause = itemB as? Cause
+                                        case "causeType":
+                                            dataObject.causeType = itemB as? CauseType
+                                        case "adjective":
+                                            dataObject.stateOfMindDesc?.adjective = itemB as? String
+                                        case "rate":
+                                            dataObject.stateOfMindDesc?.rate = (itemB as? Int16)!
+                                        case "locationName":
+                                            dataObject.location?.locationName = itemB as? String
+                                        case "latitude":
+                                            dataObject.location?.latitude = (itemB as? Double)!
+                                        case "longitude":
+                                            dataObject.location?.longitude = (itemB as? Double)!
+                                        case "locationTimeStamp":
+                                            dataObject.location?.timeStamp = itemB as? Date
+                                        default:
+                                            print("Switch default was selected")
+                                        
+                                        }
+                                        */
+                                        
+                                    //}
+                                //}
+                            }
+                        */
+                            
                         default:
                             print("default")
                         }
@@ -99,6 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         
                     } catch {
                         print(error.localizedDescription)
+                        print("ERROR loading data")
                     }
                 }
                 

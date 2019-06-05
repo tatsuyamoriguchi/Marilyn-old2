@@ -5,7 +5,6 @@
 	<string>Relationship</string>
 	<string>SNS, messaging, email, Online Communication</string>
 	<string>Personal Productivity</string>
-	<string>Skil Learning</string>
 	<string>Business &amp; Customers</string>
 	<string>Management</string>
 	<string>Commuting</string>
@@ -18,15 +17,10 @@
 	<string>Family</string>
 	<string>Finance</string>
 	<string>Job</string>
-	<string>Workplace</string>
-	<string>School</string>
-	<string>Taxes</string>
 	<string>Health</string>
 	<string>Fitness, Exercise, Sports</string>
-	<string>Spending</string>
-	<string>Gambling</string>
-	<string>Narcotic &amp; Smoking</string>
-	<string>Music</string>
+	<string>Addiction</string>
+	<string>Music, Arts, Entertainment</string>
 	<string>Neighborhood, Community</string>
 	<string>Social activities, gathering, parties</string>
 	<string>Night life activities, bar, club</string>

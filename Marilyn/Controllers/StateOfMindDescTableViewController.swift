@@ -97,7 +97,7 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
     }
   
     func stateOfMindAlert() {
-        let alertController = UIAlertController(title: "Add New", message: "Add an adjective which the best descibes your current state of mind. Use an integer, 100, -25, or -100 for rate.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add New", message: "Add an adjective which the best descibes your current state of mind. Use an integer, 100, 25, -25, or -100 for rate.", preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save", style: .default, handler: { (action) -> Void in
             
@@ -133,6 +133,8 @@ class StateOfMindDescTableViewController: UITableViewController, UITextFieldDele
                 case -100:
                     saveAction.isEnabled = true
                 case -25:
+                    saveAction.isEnabled = true
+                case 25:
                     saveAction.isEnabled = true
                 case 100:
                     saveAction.isEnabled = true
